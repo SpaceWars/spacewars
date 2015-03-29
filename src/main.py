@@ -25,25 +25,29 @@ from pyglet.window import key as Key
 
 from menu import MainMenu
 from credits import Credits
+from option import OptionsMenu
 
 
 class Title(Layer):
-    super(Title, self).__init__()
-    label = Label('SpaceWars',
-                  font_name='Bangers',
-                  font_size=32,
-                  position=((height / 4) - len(line), width))
+
+    def __init__(self):
+        super(Title, self).__init__()
+        label = Label('SpaceWars',
+                      font_name='Bangers',
+                      font_size=32,
+                      position=((height / 4) - len(line), width))
         self.add(label)
 
 
 class MainWindow(Layer):
 
-    # is_event_handler = True
+    is_event_handler = True
 
     def __init__(self):
         super(MainWindow, self).__init__()
         self.keyboard = Key.KeyStateHandler()
         # director.window.push_handlers(self.keyboard)
+        self.select_sound = soundex.load('menu.mp3')
 
     def on_key_press(self, key, modifiers):
         pass
@@ -69,6 +73,7 @@ if __name__ == "__main__":
     scene.add(MultiplexLayer(
         MainMenu(),
         Credits(),
+        OptionsMenu(),
     ),
         z=1)
     print """

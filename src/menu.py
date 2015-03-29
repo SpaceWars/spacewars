@@ -15,7 +15,8 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 """
 
-from cocos.menu import Menu, MenuItem
+from cocos.menu import *
+import sound as soundex
 
 
 class MainMenu(Menu):
@@ -32,7 +33,7 @@ class MainMenu(Menu):
         self.font_title = {
             'text': 'SpaceWars',
             'font_name': 'Bangers',
-            'font_size': 56,
+            'font_size': 72,
             'color': (192, 192, 192, 255),
             'bold': False,
             'italic': False,
@@ -50,13 +51,13 @@ class MainMenu(Menu):
             'italic': False,
             'anchor_y': 'center',
             'anchor_x': 'center',
-            'color': (192, 192, 192, 255),
+            'color': (32, 16, 32, 255),
             'dpi': 96,
         }
 
         self.font_item_selected = {
             'font_name': 'Bangers',
-            'font_size': 42,
+            'font_size': 46,
             'bold': False,
             'italic': False,
             'anchor_y': 'center',
@@ -71,7 +72,7 @@ class MainMenu(Menu):
         for menu_item in menu_items:
             self.build_menu(menu_item)
 
-        self.create_menu(self.menu_items)
+        self.create_menu(self.menu_items, shake(), shake_back())
 
     def build_menu(self, menu_item=None):
         if menu_item:
@@ -96,3 +97,4 @@ class MainMenu(Menu):
 
     def options(self):
         print "Choose your options"
+        self.parent.switch_to(2)
