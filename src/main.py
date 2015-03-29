@@ -2,7 +2,7 @@
 # -*- coding:utf-8 -*-
 
 """
-Copyright (C) 2015  SpaceWars Inc.
+Copyright (C) 2015  Luiz Fernando Oliveira, Carlos Oliveira, Matheus Souza Fernandes
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -13,16 +13,16 @@ This program is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
+import signal
+
 from cocos.layer import Layer
 from cocos.director import director
 from cocos.text import Label
 from cocos.scene import Scene
 from pyglet.window import key as Key
-import signal
+
+import menu
 
 
 class MainWindow(Layer):
@@ -33,6 +33,8 @@ class MainWindow(Layer):
         super(MainWindow, self).__init__()
         self.keyboard = Key.KeyStateHandler()
         director.window.push_handlers(self.keyboard)
+        main_menu = menu.MainMenu()
+        self.add(main_menu)
 
     def on_key_press(self, key, modifiers):
         pass
@@ -57,9 +59,10 @@ if __name__ == "__main__":
     main_window = MainWindow()
     main_scene = Scene(main_window)
     print """
-    SpaceWars  Copyright (C) 2015  SpaceWars Inc.
+    SpaceWars  Copyright (C) 2015 Luiz Fernando Oliveira, Carlos Oliveira, Matheus Souza Fernandes
 
     This program comes with ABSOLUTELY NO WARRANTY; for details type `show w'.
     This is free software, and you are welcome to redistribute it
-    under certain conditions; type `show c' for details."""
+    under certain conditions; type `show c' for details.
+    """
     director.run(main_scene)
