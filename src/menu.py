@@ -19,14 +19,51 @@ from cocos.menu import Menu, MenuItem
 
 
 class MainMenu(Menu):
+
     """Class for Main Menu
 
     It creates a main menu with default or extra options.
 
     """
-    def __init__(self, title='', menu_items=[]):
+
+    def __init__(self, title='SpaceWars', menu_items=[]):
         super(MainMenu, self).__init__()
         self.menu_items = []
+        self.font_title = {
+            'text': 'SpaceWars',
+            'font_name': 'Bangers',
+            'font_size': 56,
+            'color': (192, 192, 192, 255),
+            'bold': False,
+            'italic': False,
+            'anchor_y': 'center',
+            'anchor_x': 'center',
+            'dpi': 96,
+            'x': 0, 'y': 0,
+        }
+        self.title_text = self.title = "SpaceWars"
+
+        self.font_item = {
+            'font_name': 'Bangers',
+            'font_size': 32,
+            'bold': False,
+            'italic': False,
+            'anchor_y': 'center',
+            'anchor_x': 'center',
+            'color': (192, 192, 192, 255),
+            'dpi': 96,
+        }
+
+        self.font_item_selected = {
+            'font_name': 'Bangers',
+            'font_size': 42,
+            'bold': False,
+            'italic': False,
+            'anchor_y': 'center',
+            'anchor_x': 'center',
+            'color': (255, 255, 255, 255),
+            'dpi': 96,
+        }
 
         if not menu_items:
             self.build_default_menu()
@@ -41,12 +78,21 @@ class MainMenu(Menu):
             self.menu_items.append(menu_item)
 
     def build_default_menu(self):
-        self.menu_items.append(MenuItem('Generic Option', self.on_generic_select))
+        self.menu_items.append(MenuItem('New Game', self.new_game))
+        self.menu_items.append(MenuItem('Options', self.options))
+        self.menu_items.append(MenuItem('Credits', self.credits))
         self.menu_items.append(MenuItem('Quit', self.on_quit))
 
     def on_quit(self):
         print "Quit pressed"
         exit(0)
 
-    def on_generic_select(self):
-        print "Generic Selection made"
+    def new_game(self):
+        print "New game selected"
+
+    def credits(self):
+        print "Show me the credits!"
+        self.parent.switch_to(1)
+
+    def options(self):
+        print "Choose your options"
