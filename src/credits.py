@@ -24,17 +24,23 @@ from cocos.scene import Scene
 from pyglet.window import Window
 
 
-class Credits(Menu):
+class Credits(ScrollableLayer):
 
     """docstring for Credits"""
 
-    # is_event_handler = True
+    is_event_handler = True
 
     def __init__(self, title='SpaceWars'):
         super(Credits, self).__init__('SpaceWars')
         width, height = director.get_window_size()
-        self.font_title['font_name'] = 'Bangers'
-        self.font_title['font_size'] = 72
+        # self.font_title['font_name'] = 'Bangers'
+        # self.font_title['font_size'] = 72
+        label = Label('SpaceWars',
+                      font_name='Bangers',
+                      font_size=72,
+                      color=(192, 192, 192, 255),
+                      position=((height / 4), width - 45))
+        self.add(label)
 
         width -= 72
 
@@ -45,7 +51,7 @@ class Credits(Menu):
                           position=((height / 4) - len(line), width))
             self.add(label)
             width -= 35
-        self.create_menu([], shake(), shake_back())
+        # self.create_menu([], shake(), shake_back())
 
     def text(self):
         return """
@@ -55,7 +61,7 @@ Programmers
 -----------
 
 Luiz Fernando Gomes de Oliveira
-Carlos Oliveira
+Carlos Henrique Ferreira Oliveira
 Mateus Souza Fernandes
 
 Designers
