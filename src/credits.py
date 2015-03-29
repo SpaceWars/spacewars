@@ -17,23 +17,26 @@ GNU General Public License for more details.
 
 
 from cocos.layer import ScrollableLayer
+from cocos.menu import *
 from cocos.director import director
 from cocos.text import Label
 from cocos.scene import Scene
 from pyglet.window import Window
-from pyglet.window import key as Key
 
 
-class Credits(ScrollableLayer):
+class Credits(Menu):
 
     """docstring for Credits"""
 
-    is_event_handler = True
+    # is_event_handler = True
 
-    def __init__(self):
-        super(Credits, self).__init__()
+    def __init__(self, title='SpaceWars'):
+        super(Credits, self).__init__('SpaceWars')
         width, height = director.get_window_size()
-        self.keyboard = Key.KeyStateHandler()
+        self.font_title['font_name'] = 'Bangers'
+        self.font_title['font_size'] = 72
+
+        width -= 72
 
         for line in self.text().split('\n'):
             label = Label(line,
@@ -42,10 +45,11 @@ class Credits(ScrollableLayer):
                           position=((height / 4) - len(line), width))
             self.add(label)
             width -= 35
+        self.create_menu([], shake(), shake_back())
 
     def text(self):
         return """
-Credits:
+
 
 Programmers
 -----------
@@ -63,7 +67,7 @@ Testers
     """
 
     def on_quit(self):
-        print "Quit pressed"
+        self.parent.switch_to(0)
 
     def on_key_press(self, key, modifiers):
         self.parent.switch_to(0)

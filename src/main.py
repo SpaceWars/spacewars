@@ -46,8 +46,7 @@ class MainWindow(Layer):
     def __init__(self):
         super(MainWindow, self).__init__()
         self.keyboard = Key.KeyStateHandler()
-        # director.window.push_handlers(self.keyboard)
-        self.select_sound = soundex.load('menu.mp3')
+        director.window.push_handlers(self.keyboard)
 
     def on_key_press(self, key, modifiers):
         pass
