@@ -37,16 +37,16 @@ class MainMenu(Menu):
         self.font_title = {
             'text': 'SpaceWars',
             'font_name': 'Orbitron',
-            'font_size': 60,
+            'font_size': 72,
             'color': (192, 192, 192, 255),
-            'bold': True,
+            'bold': False,
             'anchor_y': 'center',
             'anchor_x': 'center',
         }
         self.title_text = self.title = "SpaceWars"
 
         self.font_item = {
-            'font_name': 'Titillium Web',
+            'font_name': 'Bangers',
             'font_size': 32,
             'anchor_y': 'center',
             'anchor_x': 'center',
@@ -54,7 +54,7 @@ class MainMenu(Menu):
         }
 
         self.font_item_selected = {
-            'font_name': 'Titillium Web',
+            'font_name': 'Bangers',
             'font_size': 40,
             'bold': False,
             'anchor_y': 'center',
@@ -114,8 +114,6 @@ class Credits(ScrollableLayer):
                       position=((height / 4), width - 45))
         self.add(label)
 
-        width -= 72
-
         for line in self.text().split('\n'):
             label = Label(line,
                           font_name='Bangers',
@@ -127,6 +125,11 @@ class Credits(ScrollableLayer):
 
     def text(self):
         return """
+
+
+
+
+
 
 
 Programmers
@@ -155,7 +158,7 @@ class OptionsMenu(Menu):
 
     def __init__(self):
         super(OptionsMenu, self).__init__('SpaceWars')
-        self.font_title['font_name'] = 'Bangers'
+        self.font_title['font_name'] = 'Orbitron'
         self.font_title['font_size'] = 72
         # self.font_title['color'] = (204, 164, 164, 255)
         self.font_item['font_name'] = 'Bangers',
