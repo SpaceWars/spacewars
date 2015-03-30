@@ -2,7 +2,7 @@
 # -*- coding:utf-8 -*-
 
 """
-Copyright (C) 2015  Luiz Fernando Oliveira, Carlos Oliveira, Matheus Souza Fernandes
+Copyright (C) 2015  Luiz Fernando Oliveira, Carlos Oliveira, Matheus Fernandes
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -16,47 +16,14 @@ GNU General Public License for more details.
 """
 import signal
 
-from cocos.layer import Layer, MultiplexLayer
+from cocos.layer import MultiplexLayer
 from cocos.director import director
-from cocos.text import Label
 from cocos.scene import Scene
-from cocos.scenes.transitions import *
-from pyglet.window import key as Key
 
-from menu import MainMenu
-from credits import Credits
-from option import OptionsMenu
+from pyglet import resource, font
 
-
-class Title(Layer):
-
-    def __init__(self):
-        super(Title, self).__init__()
-        label = Label('SpaceWars',
-                      font_name='Bangers',
-                      font_size=32,
-                      position=((height / 4) - len(line), width))
-        self.add(label)
-
-
-class MainWindow(Layer):
-
-    is_event_handler = True
-
-    def __init__(self):
-        super(MainWindow, self).__init__()
-        self.keyboard = Key.KeyStateHandler()
-        director.window.push_handlers(self.keyboard)
-
-    def on_key_press(self, key, modifiers):
-        pass
-
-    def on_key_release(self, key, modifiers):
-        if self.keyboard[Key.ENTER]:
-            pass
-
-    def on_quit(self):
-        self.parent.switch_to(0)
+from layers.base_layers import BackgroundLayer
+from layers.menu import MainMenu, Credits, OptionsMenu
 
 
 def signal_handler(signal_received, frame):
@@ -66,8 +33,12 @@ def signal_handler(signal_received, frame):
         exit(0)
 
 if __name__ == "__main__":
+    resource.path.append('data')
+    resource.reindex()
+    font.add_directory('data/fonts')
+
     signal.signal(signal.SIGINT, signal_handler)
-    director.init()
+    director.init(width=800, height=600, caption='SpaceWars')
     scene = Scene()
     scene.add(MultiplexLayer(
         MainMenu(),
@@ -75,6 +46,7 @@ if __name__ == "__main__":
         OptionsMenu(),
     ),
         z=1)
+    scene.add(BackgroundLayer('backgrounds/space_background.png'), z=0)
     print """
     SpaceWars  Copyright (C) 2015 Luiz Fernando Oliveira, Carlos Oliveira, Matheus Souza Fernandes
 

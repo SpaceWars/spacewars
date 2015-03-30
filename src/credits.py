@@ -2,7 +2,7 @@
 # -*- encoding: utf-8 -*-
 
 """
-Copyright (C) 2015  Luiz Fernando Oliveira, Carlos Oliveira, Matheus Souza Fernandes
+Copyright (C) 2015  Luiz Fernando Oliveira, Carlos Oliveira, Matheus Fernandes
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by

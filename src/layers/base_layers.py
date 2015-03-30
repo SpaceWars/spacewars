@@ -1,11 +1,7 @@
-#!/usr/bin/env python
-# coding: utf-8
+#!/usr/bin/python
+# -*- coding:utf-8 -*-
 
-"""SpaceWars
-
-A shooting game inspired by Space Invaders and others classic games.
-
-
+"""
 Copyright (C) 2015  Luiz Fernando Oliveira, Carlos Oliveira, Matheus Fernandes
 
 This program is free software: you can redistribute it and/or modify
@@ -17,14 +13,21 @@ This program is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
-
 """
 
-# License type
-__license__ = "GPL3"
-# Date release
-__date__ = '2015'
-# Actual version
-__version__ = "0.1"
-# Authors
-__author__ = "Luiz Fernando Oliveira, Carlos Oliveira, Matheus Souza Fernandez"
+from cocos.layer import Layer
+from pyglet import resource
+from pyglet.gl import glPushMatrix, glPopMatrix
+
+
+class BackgroundLayer(Layer):
+
+    def __init__(self, background):
+        super(BackgroundLayer, self).__init__()
+        self.image = resource.image(background)
+
+    def draw(self):
+        glPushMatrix()
+        self.transform()
+        self.image.blit(0, 0)
+        glPopMatrix()
