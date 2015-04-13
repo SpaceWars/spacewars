@@ -17,7 +17,8 @@ GNU General Public License for more details.
 from cocos.layer import Layer
 from cocos.scene import Scene
 from layers.base_layers import BackgroundLayer
-from game.sprites import SpaceShipSprite
+from game.sprites import *
+from configs import WIDTH, HEIGHT
 
 
 class GameScene(Layer):
@@ -35,5 +36,10 @@ class GameScene(Layer):
 
         spaceship = SpaceShipSprite()
         scene.add(spaceship)
+        aerolites = []
+        for x in xrange(50, WIDTH, 100):
+            aerolites.append(AeroliteSprite(width=x))
+        for aero in aerolites:
+            scene.add(aero)
 
         return scene

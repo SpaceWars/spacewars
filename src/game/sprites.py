@@ -16,7 +16,7 @@ GNU General Public License for more details.
 """
 from cocos.sprite import Sprite
 from cocos.actions import MoveTo
-from configs import WIDTH
+from configs import WIDTH, HEIGHT
 
 
 class SpaceShipSprite(Sprite):
@@ -28,3 +28,14 @@ class SpaceShipSprite(Sprite):
         self.position = (WIDTH / 2, - self.image.height)
         self.scale = 0.35
         self.do(MoveTo((WIDTH / 2, 100), 2))
+
+
+class AeroliteSprite(Sprite):
+
+    def __init__(self, width=WIDTH / 2, height=2 * HEIGHT):
+        image = 'sprites/aerolite/aero1.png'
+        super(AeroliteSprite, self).__init__(image)
+
+        self.position = (width, height)
+        self.scale = 0.15
+        self.do(MoveTo((width, -self.image.height), 5.5))
