@@ -14,37 +14,46 @@ but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 """
+from pyglet.window import key
 from cocos.layer import Layer
 from cocos.scene import Scene
 from layers.base_layers import BackgroundLayer
-from game.sprites import *
-from configs import WIDTH, HEIGHT
+from game.sprites import SpaceShipSprite, AeroliteSprite, RohenianSprite
+from configs import WIDTH
 
 
 class GameScene(Layer):
+    is_event_handler = True
 
     def __init__(self):
         super(GameScene, self).__init__()
+        self.background = BackgroundLayer('backgrounds/bluespace.png')
+        self.spaceship = SpaceShipSprite()
+        self.aerolites = []
+        self.rohenians = []
+        for x in xrange(50, WIDTH, 100):
+            self.aerolites.append(AeroliteSprite(width=x))
+            self.rohenians.append(RohenianSprite())
 
-    @classmethod
-    def new_game(cls):
+    def new_game(self):
         scene = Scene()
 
-        game_scene = GameScene()
-        scene.add(BackgroundLayer('backgrounds/bluespace.png'), z=0)
-        scene.add(game_scene)
+        scene.add(self.background, z=0)
+        scene.add(self)
+        scene.add(self.spaceship)
 
-        spaceship = SpaceShipSprite()
-        scene.add(spaceship)
-        aerolites = []
-        rohenians = []
-        for x in xrange(0, WIDTH, 100):
-            aerolites.append(AeroliteSprite(width=x))
-            rohenians.append(RohenianSprite())
-        for aero in aerolites:
+        for aero in self.aerolites:
             scene.add(aero)
 
-        for rohenian in rohenians:
+        for rohenian in self.rohenians:
             scene.add(rohenian)
 
         return scene
+
+    def on_key_press(self, keys, mod):
+        if keys == key.LEFT:
+            print 'Move Spaceship to left'
+            self.spaceship.move_left()
+        elif keys == key.RIGHT:
+            print 'Move Spaceship to rigth'
+            self.spaceship.move_rigth()

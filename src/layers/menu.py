@@ -89,7 +89,8 @@ class MainMenu(Menu):
 
     def new_game(self):
         print "New game selected"
-        director.push(FadeBLTransition(GameScene.new_game(), 1.5))
+        game_scene = GameScene()
+        director.push(FadeBLTransition(game_scene.new_game(), 1.5))
 
     def credits(self):
         print "Show me the credits!"

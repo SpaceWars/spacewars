@@ -16,7 +16,9 @@ GNU General Public License for more details.
 """
 from cocos.sprite import Sprite
 from cocos.actions import MoveTo
-from configs import WIDTH, HEIGHT
+from configs import WIDTH, HEIGHT, DATA_DIR
+from pyglet import image
+import os
 
 
 class SpaceShipSprite(Sprite):
@@ -28,6 +30,18 @@ class SpaceShipSprite(Sprite):
         self.position = (WIDTH / 2, - self.image.height)
         self.scale = 0.35
         self.do(MoveTo((WIDTH / 2, 100), 2))
+
+    def move_left(self):
+        x = self.position[0] - 10
+        y = self.position[1]
+
+        self.position = (x, y)
+
+    def move_rigth(self):
+        x = self.position[0] + 10
+        y = self.position[1]
+
+        self.position = (x, y)
 
 
 class AeroliteSprite(Sprite):
