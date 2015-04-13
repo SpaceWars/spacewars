@@ -23,3 +23,6 @@ FONT = {'header': 'Orbitron',
         'body_size_selected': 46,
         'gray': (32, 16, 32, 255),
         'white': (255, 255, 255, 255)}
+
+WIDTH = 800
+HEIGHT = 600

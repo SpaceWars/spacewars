@@ -24,6 +24,7 @@ from pyglet import resource, font
 
 from layers.base_layers import BackgroundLayer
 from layers.menu import MainMenu, Credits, OptionsMenu
+from configs import WIDTH, HEIGHT
 
 
 def signal_handler(signal_received, frame):
@@ -38,7 +39,7 @@ if __name__ == "__main__":
     font.add_directory('data/fonts')
 
     signal.signal(signal.SIGINT, signal_handler)
-    director.init(width=800, height=600, caption='SpaceWars')
+    director.init(width=WIDTH, height=HEIGHT, caption='SpaceWars')
     scene = Scene()
     scene.add(BackgroundLayer('backgrounds/space_background.png'), z=0)
     scene.add(MultiplexLayer(

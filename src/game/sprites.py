@@ -14,3 +14,17 @@ but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 """
+from cocos.sprite import Sprite
+from cocos.actions import MoveTo
+from configs import WIDTH
+
+
+class SpaceShipSprite(Sprite):
+
+    def __init__(self):
+        image = 'sprites/spaceship/center.png'
+        super(SpaceShipSprite, self).__init__(image)
+
+        self.position = (WIDTH / 2, - self.image.height)
+        self.scale = 0.35
+        self.do(MoveTo((WIDTH / 2, 100), 2))

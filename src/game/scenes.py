@@ -17,6 +17,7 @@ GNU General Public License for more details.
 from cocos.layer import Layer
 from cocos.scene import Scene
 from layers.base_layers import BackgroundLayer
+from game.sprites import SpaceShipSprite
 
 
 class GameScene(Layer):
@@ -31,5 +32,8 @@ class GameScene(Layer):
         game_scene = GameScene()
         scene.add(BackgroundLayer('backgrounds/bluespace.png'), z=0)
         scene.add(game_scene)
+
+        spaceship = SpaceShipSprite()
+        scene.add(spaceship)
 
         return scene
