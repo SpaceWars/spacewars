@@ -50,10 +50,10 @@ class GameScene(Layer):
 
         return scene
 
-    def on_key_press(self, keys, mod):
-        if keys == key.LEFT:
+    def on_text_motion(self, keys):
+        if keys == key.MOTION_LEFT:
             print 'Move Spaceship to left'
             self.spaceship.move_left()
-        elif keys == key.RIGHT:
+        elif keys == key.MOTION_RIGHT:
             print 'Move Spaceship to rigth'
             self.spaceship.move_rigth()
