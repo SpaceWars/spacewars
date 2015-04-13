@@ -40,13 +40,13 @@ if __name__ == "__main__":
     signal.signal(signal.SIGINT, signal_handler)
     director.init(width=800, height=600, caption='SpaceWars')
     scene = Scene()
+    scene.add(BackgroundLayer('backgrounds/space_background.png'), z=0)
     scene.add(MultiplexLayer(
         MainMenu(),
         Credits(),
         OptionsMenu(),
     ),
         z=1)
-    scene.add(BackgroundLayer('backgrounds/space_background.png'), z=0)
     print """
     SpaceWars  Copyright (C) 2015 Luiz Fernando Oliveira, Carlos Oliveira, Matheus Souza Fernandes
 

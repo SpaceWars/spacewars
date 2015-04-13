@@ -17,8 +17,11 @@ GNU General Public License for more details.
 from cocos.director import director
 from cocos.text import Label
 from cocos.layer import ScrollableLayer
-from cocos.menu import Menu, MultipleMenuItem, MenuItem, ToggleMenuItem,\
-    shake, shake_back, CENTER
+from cocos.scenes.transitions import FadeBLTransition
+from cocos.menu import (Menu, MultipleMenuItem, MenuItem, ToggleMenuItem,
+                        shake, shake_back, CENTER)
+from game.scenes import GameScene
+from configs import FONT
 import sound as soundex
 
 
@@ -36,30 +39,30 @@ class MainMenu(Menu):
 
         self.font_title = {
             'text': 'SpaceWars',
-            'font_name': 'Orbitron',
-            'font_size': 72,
-            'color': (192, 192, 192, 255),
-            'bold': False,
+            'font_name': FONT['header'],
+            'font_size': FONT['header_size'],
+            'color': FONT['white'],
+            'bold': True,
             'anchor_y': 'center',
             'anchor_x': 'center',
         }
         self.title_text = self.title = "SpaceWars"
 
         self.font_item = {
-            'font_name': 'Bangers',
-            'font_size': 32,
+            'font_name': FONT['body'],
+            'font_size': FONT['body_size'],
             'anchor_y': 'center',
             'anchor_x': 'center',
-            'color': (32, 16, 32, 255),
+            'color': FONT['gray'],
         }
 
         self.font_item_selected = {
-            'font_name': 'Bangers',
-            'font_size': 40,
+            'font_name': FONT['body'],
+            'font_size': FONT['body_size_selected'],
             'bold': False,
             'anchor_y': 'center',
             'anchor_x': 'center',
-            'color': (255, 255, 255, 255),
+            'color': FONT['white'],
         }
 
         if not menu_items:
@@ -86,6 +89,7 @@ class MainMenu(Menu):
 
     def new_game(self):
         print "New game selected"
+        director.push(FadeBLTransition(GameScene.new_game(), 1.5))
 
     def credits(self):
         print "Show me the credits!"
@@ -105,47 +109,29 @@ class Credits(ScrollableLayer):
     def __init__(self, title='SpaceWars'):
         super(Credits, self).__init__('SpaceWars')
         width, height = director.get_window_size()
-        # self.font_title['font_name'] = 'Bangers'
-        # self.font_title['font_size'] = 72
         label = Label('SpaceWars',
-                      font_name='Bangers',
-                      font_size=72,
-                      color=(192, 192, 192, 255),
+                      font_name=FONT['header'],
+                      font_size=FONT['header_size'],
+                      color=FONT['white'],
                       position=((height / 4), width - 45))
         self.add(label)
 
         for line in self.text().split('\n'):
             label = Label(line,
-                          font_name='Bangers',
-                          font_size=32,
-                          position=((height / 4) - len(line), width))
+                          font_name=FONT['body'],
+                          font_size=FONT['body_size_small'],
+                          # position=((height / 4) - len(line), width))
+                          position=((height / 7) - len(line), width - 450))
             self.add(label)
-            width -= 35
-        # self.create_menu([], shake(), shake_back())
+            width -= 50
 
     def text(self):
-        return """
-
-
-
-
-
-
-
-Programmers
+        return """Programmers
 -----------
-
 Luiz Fernando Gomes de Oliveira
 Carlos Henrique Ferreira Oliveira
 Mateus Souza Fernandes
-
-Designers
----------
-
-
-Testers
--------
-    """
+"""
 
     def on_quit(self):
         self.parent.switch_to(0)
@@ -158,24 +144,39 @@ class OptionsMenu(Menu):
 
     def __init__(self):
         super(OptionsMenu, self).__init__('SpaceWars')
-        self.font_title['font_name'] = 'Orbitron'
-        self.font_title['font_size'] = 72
-        # self.font_title['color'] = (204, 164, 164, 255)
-        self.font_item['font_name'] = 'Bangers',
-        self.font_item['color'] = (32, 16, 32, 255)
-        self.font_item['font_size'] = 32
-        self.font_item_selected['font_name'] = 'Bangers'
-        # self.font_item_selected['color'] = (32, 16, 32, 255)
-        self.font_item_selected['font_size'] = 46
-        # you can also override the font size and the colors. see menu.py for
-        # more info
-        # example: menus can be vertical aligned and horizontal aligned
+
+        self.font_title = {
+            'text': 'SpaceWars',
+            'font_name': FONT['header'],
+            'font_size': FONT['header_size'],
+            'color': FONT['white'],
+            'bold': True,
+            'anchor_y': 'center',
+            'anchor_x': 'center',
+        }
+
+        self.font_item = {
+            'font_name': FONT['body'],
+            'font_size': FONT['body_size'],
+            'anchor_y': 'center',
+            'anchor_x': 'center',
+            'color': FONT['gray'],
+        }
+
+        self.font_item_selected = {
+            'font_name': FONT['body'],
+            'font_size': FONT['body_size_selected'],
+            'bold': False,
+            'anchor_y': 'center',
+            'anchor_x': 'center',
+            'color': FONT['white'],
+        }
+
         self.menu_anchor_y = CENTER
         self.menu_anchor_x = CENTER
         self.show_fullscreen = False
         items = []
-        # self.volumes = ['Mute', '10', '20', '30',
-        #                 '40', '50', '60', '70', '80', '90', '100']
+
         self.volumes = ['Mute', 'Sound in space?']
         items.append(MultipleMenuItem(
             'SFX volume: ',
@@ -192,8 +193,10 @@ class OptionsMenu(Menu):
         items.append(
             ToggleMenuItem('Show FPS:', self.on_show_fps, director.show_FPS))
         items.append(
-            ToggleMenuItem('Fullscreen:', self.on_fullscreen, self.show_fullscreen))
+            ToggleMenuItem('Fullscreen:', self.on_fullscreen,
+                           self.show_fullscreen))
         items.append(MenuItem('Back', self.on_quit))
+
         self.create_menu(items, shake(), shake_back())
 
     def on_fullscreen(self, value):
