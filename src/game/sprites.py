@@ -37,11 +37,18 @@ class SpaceShipSprite(Sprite):
 
         self.position = (x, y)
 
+        self.image = image.load('data/sprites/spaceship/left4.png')
+
     def move_rigth(self):
         x = self.position[0] + 10
         y = self.position[1]
 
         self.position = (x, y)
+
+        self.image = image.load('data/sprites/spaceship/right4.png')
+
+    def center_spaceship(self):
+        self.image = image.load('data/sprites/spaceship/center.png')
 
 
 class AeroliteSprite(Sprite):

@@ -57,3 +57,7 @@ class GameScene(Layer):
         elif keys == key.MOTION_RIGHT:
             print 'Move Spaceship to rigth'
             self.spaceship.move_rigth()
+
+    def on_key_release(self, keys, mod):
+        print 'Centering spaceship'
+        self.spaceship.center_spaceship()
