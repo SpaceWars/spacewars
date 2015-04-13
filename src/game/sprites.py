@@ -39,3 +39,14 @@ class AeroliteSprite(Sprite):
         self.position = (width, height)
         self.scale = 0.15
         self.do(MoveTo((width, -self.image.height), 5.5))
+
+
+class RohenianSprite(Sprite):
+
+    def __init__(self):
+        image = "sprites/rohenians/F5S1.png"
+        super(RohenianSprite, self).__init__(image)
+
+        self.position = (WIDTH, HEIGHT)
+        self.scale = 0.50
+        self.do(MoveTo((WIDTH / 2, 100), 5.5))

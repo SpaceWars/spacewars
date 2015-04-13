@@ -37,9 +37,14 @@ class GameScene(Layer):
         spaceship = SpaceShipSprite()
         scene.add(spaceship)
         aerolites = []
-        for x in xrange(50, WIDTH, 100):
+        rohenians = []
+        for x in xrange(0, WIDTH, 100):
             aerolites.append(AeroliteSprite(width=x))
+            rohenians.append(RohenianSprite())
         for aero in aerolites:
             scene.add(aero)
+
+        for rohenian in rohenians:
+            scene.add(rohenian)
 
         return scene
