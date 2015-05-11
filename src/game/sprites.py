@@ -16,9 +16,8 @@ GNU General Public License for more details.
 """
 from cocos.sprite import Sprite
 from cocos.actions import MoveTo
-from configs import WIDTH, HEIGHT, DATA_DIR
+from configs import WIDTH, HEIGHT
 from pyglet import image
-import os
 
 
 class SpaceShipSprite(Sprite):
@@ -51,15 +50,15 @@ class SpaceShipSprite(Sprite):
         self.image = image.load('data/sprites/spaceship/center.png')
 
 
-class Enimies(Sprite):
+class Enemies(Sprite):
 
-    """docstring for Enimies"""
+    """docstring for Enemies"""
 
     def __init__(self, arg):
-        super(Enimies, self).__init__(arg)
+        super(Enemies, self).__init__(arg)
 
 
-class AeroliteSprite(Enimies):
+class AeroliteSprite(Enemies):
 
     def __init__(self, width=WIDTH / 2, height=2 * HEIGHT):
         image = 'sprites/aerolite/aero1.png'
@@ -70,7 +69,7 @@ class AeroliteSprite(Enimies):
         self.do(MoveTo((width, -self.image.height), 5.5))
 
 
-class RohenianSprite(Enimies):
+class RohenianSprite(Enemies):
 
     def __init__(self):
         image = "sprites/rohenians/F5S1.png"
