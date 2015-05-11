@@ -17,8 +17,8 @@ GNU General Public License for more details.
 import signal
 
 from cocos.layer import MultiplexLayer
-# from cocos.director import director
-from director import director
+from cocos.director import director
+# from director import director
 from cocos.scene import Scene
 
 from pyglet import resource, font

@@ -51,7 +51,15 @@ class SpaceShipSprite(Sprite):
         self.image = image.load('data/sprites/spaceship/center.png')
 
 
-class AeroliteSprite(Sprite):
+class Enimies(Sprite):
+
+    """docstring for Enimies"""
+
+    def __init__(self, arg):
+        super(Enimies, self).__init__(arg)
+
+
+class AeroliteSprite(Enimies):
 
     def __init__(self, width=WIDTH / 2, height=2 * HEIGHT):
         image = 'sprites/aerolite/aero1.png'
@@ -62,7 +70,7 @@ class AeroliteSprite(Sprite):
         self.do(MoveTo((width, -self.image.height), 5.5))
 
 
-class RohenianSprite(Sprite):
+class RohenianSprite(Enimies):
 
     def __init__(self):
         image = "sprites/rohenians/F5S1.png"
