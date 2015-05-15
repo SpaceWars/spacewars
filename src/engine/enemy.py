@@ -29,6 +29,11 @@ class EnemyFactory(object):
     """docstring for EnemyFactory"""
     enemy_list = {"Rohenian": [], "Aerolite": []}
 
+    def __new__(cls):
+        if not hasattr(cls, 'instance'):
+            cls.instance = super(EnemyFactory, cls).__new__(cls)
+        return cls.instance
+
     @classmethod
     def populate_enemy(cls, enemy_type, qnt=1):
         class Rohenian(Enemy):
