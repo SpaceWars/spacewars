@@ -23,7 +23,7 @@ from engine.enemy import EnemyFactory
 from pyglet import clock
 from cocos.director import director
 from cocos.actions import MoveTo, MoveBy, Repeat
-from configs import WIDTH
+from configs import WIDTH, HEIGHT
 import random
 
 
@@ -38,13 +38,20 @@ class GameScene(Layer):
         EnemyFactory.populate_enemy("Rohenian", qnt=50)
         self.aerolites = EnemyFactory.create_enemy("Aerolite", 5)
         self.rohenians = EnemyFactory.create_enemy("Rohenian", 5)
-        clock.schedule_interval(self.re_launch, 8)
-        clock.schedule_interval(self.set_direction, .1)
+        clock.schedule_interval(self.re_launch_aero, 10)
+        clock.schedule_interval(self.re_launch_rohenian, 15)
+        clock.schedule_interval(self.set_direction, .8)
 
-    def re_launch(self, *arg):
-        print 'new wave', arg
-        self.aerolites += EnemyFactory.create_enemy("Aerolite", 5)
-        self.rohenians += EnemyFactory.create_enemy("Rohenian", 5)
+    def re_launch_aero(self, *arg):
+        print 'new wave Aerolite', arg
+        for aero in self.aerolites:
+            aero.position = (random.randint(0, WIDTH), HEIGHT)
+        director.scene = self.set_direction()
+
+    def re_launch_rohenian(self, *arg):
+        print 'new wave Rohenian', arg
+        for rohenian in self.rohenians:
+            rohenian.position = (random.randint(0, WIDTH), HEIGHT)
         director.scene = self.set_direction()
 
     def new_game(self):
@@ -81,12 +88,12 @@ class GameScene(Layer):
                 width = random.randint(-WIDTH, WIDTH)
                 rohenian.do(
                     MoveBy((width, -rohenian.image.height), random.randint(5, 15)))
-                rohenian.position = (
-                    rohenian.position[0], rohenian.position[1] - 3)
                 scene.add(rohenian)
         print len(self.rohenians)
 
         for aero in self.aerolites:
+            width = random.randint(-WIDTH, WIDTH)
+            aero.do(MoveTo((width, -aero.image.height), 7.5))
             scene.add(aero)
 
         return scene
@@ -106,6 +113,7 @@ class GameScene(Layer):
     def on_key_press(self, keys, mod):
         if keys == key.ESCAPE:
             clock.unschedule(self.set_direction)
-            clock.unschedule(self.re_launch)
+            clock.unschedule(self.re_launch_aero)
+            clock.unschedule(self.re_launch_rohenian)
             print len(self.aerolites)
         print key.symbol_string(keys)

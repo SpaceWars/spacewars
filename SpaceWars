@@ -19,7 +19,7 @@ import sys
 from subprocess import call
 
 sys.stderr.write('Removing *.pyc\n')
-os.system('find . -type f -name "*.pyc" -exec rm -rf "{}" \;')
+# os.system('find . -type f -name "*.pyc" -exec rm -rf "{}" \;')
 
 pathname = os.path.dirname(sys.argv[0])
 gamepath = os.path.abspath(pathname) + '/src/'
