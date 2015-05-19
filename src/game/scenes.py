@@ -22,7 +22,7 @@ from game.sprites import SpaceShipSprite
 from engine.enemy import EnemyFactory
 from pyglet import clock
 from cocos.director import director
-from cocos.actions import MoveTo
+from cocos.actions import MoveTo, MoveBy, Repeat
 from configs import WIDTH
 import random
 
@@ -39,13 +39,13 @@ class GameScene(Layer):
         self.aerolites = EnemyFactory.create_enemy("Aerolite", 5)
         self.rohenians = EnemyFactory.create_enemy("Rohenian", 5)
         clock.schedule_interval(self.re_launch, 8)
-        clock.schedule_interval(self.set_direction, .8)
+        clock.schedule_interval(self.set_direction, .1)
 
     def re_launch(self, *arg):
         print 'new wave', arg
         self.aerolites += EnemyFactory.create_enemy("Aerolite", 5)
         self.rohenians += EnemyFactory.create_enemy("Rohenian", 5)
-        director.scene = self.new_game()
+        director.scene = self.set_direction()
 
     def new_game(self):
         scene = Scene()
@@ -56,26 +56,35 @@ class GameScene(Layer):
 
         for aero in self.aerolites:
             width = random.randint(0, WIDTH)
-            aero.do(MoveTo((width, -aero.image.height), 8))
+            aero.do(MoveTo((width, -aero.image.height), 15))
             scene.add(aero)
 
         for rohenian in self.rohenians:
-            width = random.randint(-WIDTH, 3 * WIDTH)
-            rohenian.do(MoveTo((width, -rohenian.image.height), 8.5))
+            width = random.randint(-WIDTH, 2 * WIDTH)
+            rohenian.do(MoveTo((0, rohenian.image.height), 30.5))
             scene.add(rohenian)
 
         return scene
 
     def set_direction(self, *args):
         scene = Scene()
+        scene.add(self.background, z=0)
+        scene.add(self)
+        scene.add(self.spaceship)
+
         for rohenian in self.rohenians:
             print rohenian.position
-            if rohenian.position[1] < 100:
+            if rohenian.position[1] < -rohenian.image.height * 0.7:
                 self.rohenians.remove(rohenian)
+                pass
             else:
-                width = random.randint(-WIDTH, 2 * WIDTH)
-                rohenian.do(MoveTo((-width, -rohenian.image.height), 8.5))
+                width = random.randint(-WIDTH, WIDTH)
+                rohenian.do(
+                    MoveBy((width, -rohenian.image.height), random.randint(5, 15)))
+                rohenian.position = (
+                    rohenian.position[0], rohenian.position[1] - 3)
                 scene.add(rohenian)
+        print len(self.rohenians)
 
         for aero in self.aerolites:
             scene.add(aero)

@@ -80,4 +80,3 @@ class RohenianSprite(Enemies):
         width = random.randint(0, WIDTH)
         self.position = (width, HEIGHT)
         self.scale = 0.30
-        self.do(MoveTo((WIDTH / 2, -self.image.height), 8.5))
