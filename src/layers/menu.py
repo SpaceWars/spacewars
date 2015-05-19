@@ -135,6 +135,7 @@ Mateus Souza Fernandes
 """
 
     def on_quit(self):
+        print 'sair'
         self.parent.switch_to(0)
 
     def on_key_press(self, key, modifiers):

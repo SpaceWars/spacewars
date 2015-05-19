@@ -18,6 +18,7 @@ from cocos.sprite import Sprite
 from cocos.actions import MoveTo
 from configs import WIDTH, HEIGHT
 from pyglet import image
+import random
 
 
 class SpaceShipSprite(Sprite):
@@ -27,7 +28,7 @@ class SpaceShipSprite(Sprite):
         super(SpaceShipSprite, self).__init__(image)
 
         self.position = (WIDTH / 2, - self.image.height)
-        self.scale = 0.35
+        self.scale = 0.25
         self.do(MoveTo((WIDTH / 2, 100), 2))
 
     def move_left(self):
@@ -64,9 +65,10 @@ class AeroliteSprite(Enemies):
         image = 'sprites/aerolite/aero1.png'
         super(AeroliteSprite, self).__init__(image)
 
+        width = random.randint(0, WIDTH)
         self.position = (width, height)
         self.scale = 0.15
-        self.do(MoveTo((width, -self.image.height), 5.5))
+        self.do(MoveTo((width, -self.image.height), 7.5))
 
 
 class RohenianSprite(Enemies):
@@ -75,6 +77,7 @@ class RohenianSprite(Enemies):
         image = "sprites/rohenians/F5S1.png"
         super(RohenianSprite, self).__init__(image)
 
-        self.position = (WIDTH, HEIGHT)
-        self.scale = 0.50
-        self.do(MoveTo((WIDTH / 2, 100), 5.5))
+        width = random.randint(0, WIDTH)
+        self.position = (width, HEIGHT)
+        self.scale = 0.30
+        self.do(MoveTo((WIDTH / 2, -self.image.height), 8.5))
