@@ -80,3 +80,13 @@ class RohenianSprite(Enemies):
         width = random.randint(0, WIDTH)
         self.position = (width, HEIGHT)
         self.scale = 0.30
+
+
+class Bullet(Sprite):
+
+    """docstring for Bullet"""
+
+    def __init__(self):
+        image = "sprites/rohenians/fire.png"
+        super(Bullet, self).__init__(image)
+        self.scale = 0.25

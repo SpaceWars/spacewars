@@ -15,18 +15,7 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 """
 
-# from game.sprites import Bullets
-
-from cocos.sprite import Sprite
-
-
-class Bullets(Sprite):
-
-    """docstring for Bullet"""
-
-    def __init__(self):
-        pass
-
+from game.sprites import Bullets
 
 hero = ['Spaceship', 'spaceship', 'hero', 'player']
 rohenian = ['Rohenian', 'rohenian', 'enemies', 'ro']
