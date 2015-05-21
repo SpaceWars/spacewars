@@ -19,9 +19,9 @@ import signal
 from cocos.layer import MultiplexLayer
 from cocos.director import director
 from cocos.scene import Scene
-
+from engine.event import EventHandle
 from pyglet import resource, font
-
+from pyglet.window import key
 from layers.base_layers import BackgroundLayer
 from layers.menu import MainMenu, Credits, OptionsMenu
 from configs import WIDTH, HEIGHT
@@ -48,6 +48,9 @@ if __name__ == "__main__":
         OptionsMenu(),
     ),
         z=1)
+    keyboard = key.KeyStateHandler()
+    director.window.push_handlers(keyboard)
+    EventHandle().keyboard = keyboard
     print """
     SpaceWars  Copyright (C) 2015 Luiz Fernando Oliveira, Carlos Oliveira, Matheus Souza Fernandes
 

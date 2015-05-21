@@ -17,8 +17,9 @@ GNU General Public License for more details.
 from cocos.sprite import Sprite
 from cocos.actions import MoveTo
 from configs import WIDTH, HEIGHT
-from pyglet import image
+from pyglet import resource
 import random
+from engine.action import AeroliteAction, SpaceshipAction
 
 
 class SpaceShipSprite(Sprite):
@@ -29,26 +30,18 @@ class SpaceShipSprite(Sprite):
 
         self.position = (WIDTH / 2, - self.image.height)
         self.scale = 0.25
+        self.velocity = (0, 0)
         self.do(MoveTo((WIDTH / 2, 100), 2))
+        self.do(SpaceshipAction())
 
     def move_left(self):
-        x = self.position[0] - 10
-        y = self.position[1]
+        self.image = resource.image('data/sprites/spaceship/left4.png')
 
-        self.position = (x, y)
-
-        self.image = image.load('data/sprites/spaceship/left4.png')
-
-    def move_rigth(self):
-        x = self.position[0] + 10
-        y = self.position[1]
-
-        self.position = (x, y)
-
-        self.image = image.load('data/sprites/spaceship/right4.png')
+    def move_right(self):
+        self.image = resource.image('data/sprites/spaceship/right4.png')
 
     def center_spaceship(self):
-        self.image = image.load('data/sprites/spaceship/center.png')
+        self.image = resource.image('data/sprites/spaceship/center.png')
 
 
 class Enemies(Sprite):
@@ -57,6 +50,7 @@ class Enemies(Sprite):
 
     def __init__(self, arg):
         super(Enemies, self).__init__(arg)
+        self.velocity = (0, 0)
 
 
 class AeroliteSprite(Enemies):
@@ -66,9 +60,9 @@ class AeroliteSprite(Enemies):
         super(AeroliteSprite, self).__init__(image)
 
         width = random.randint(0, WIDTH)
-        self.position = (width, height)
         self.scale = 0.15
-        self.do(MoveTo((width, -self.image.height), 7.5))
+        self.position = (width, HEIGHT + HEIGHT / 8)
+        self.do(AeroliteAction())
 
 
 class RohenianSprite(Enemies):
