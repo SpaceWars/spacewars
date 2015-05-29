@@ -59,8 +59,6 @@ class SpaceshipAction(actions.Move):
         if keyboard[key.SPACE]:
             print "FIRE THIS MODAFOCKA!!!", dt, self.target.position, max_right
 
-            # print self.target.velocity
-
 
 class AeroliteAction(actions.Move):
 
@@ -73,4 +71,3 @@ class AeroliteAction(actions.Move):
         if self.target.position[1] < -self.target.image.height:
             self.target.position = (
                 random.randint(0, WIDTH), HEIGHT + self.target.image.height)
-        # print self.target.position

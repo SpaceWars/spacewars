@@ -80,6 +80,8 @@ class Bullet(Sprite):
 
     """docstring for Bullet"""
 
+    dmg = 0.0
+
     def __init__(self, image, dmg):
         super(Bullet, self).__init__(image)
         self.scale = 0.25
