@@ -15,7 +15,7 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 """
 
-from game.sprites import Bullets
+from game.sprites import SpaceShipBullet, RoheniansBullet
 
 hero = ['Spaceship', 'spaceship', 'hero', 'player']
 rohenian = ['Rohenian', 'rohenian', 'enemies', 'ro']
@@ -36,16 +36,16 @@ class FireFactory(object):
     def create_bullets(cls, bullet_type, qnt=50):
         if bullet_type in hero:
             for x in xrange(0, qnt):
-                cls.ammo['hero'].append(Bullets())
+                cls.ammo['hero'].append(SpaceShipBullet())
         elif bullet_type in rohenian:
             for x in xrange(0, qnt):
-                cls.ammo['enemies'].append(Bullets())
+                cls.ammo['enemies'].append(RoheniansBullet())
 
     @classmethod
     def delivery_bullets(cls, bullet_type, qnt=50):
         if len(cls.ammo[bullet_type]) < qnt:
             cls.create_bullets(
-                bullet_type, qnt - len(cls.ammo[bullet_type]))
+                bullet_type, int(qnt) - len(cls.ammo[bullet_type]))
 
         if bullet_type in hero:
             return_list = cls.ammo["hero"][:qnt]

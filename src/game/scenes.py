@@ -19,6 +19,7 @@ from cocos.scene import Scene
 from layers.base_layers import BackgroundLayer
 from game.sprites import SpaceShipSprite
 from engine.enemy import EnemyFactory
+from engine.gunfire import FireFactory
 from pyglet import clock
 from cocos.director import director
 from cocos.actions import MoveTo
@@ -32,6 +33,8 @@ class GameScene(Scene):
         super(GameScene, self).__init__()
         self.background = BackgroundLayer('backgrounds/bluespace.png')
         self.spaceship = SpaceShipSprite()
+        FireFactory.create_bullets('hero', qnt=300)
+        self.bullets_hero = FireFactory().delivery_bullets('hero', 30)
         EnemyFactory.populate_enemy("Aerolite", qnt=15)
         EnemyFactory.populate_enemy("Rohenian", qnt=15)
         self.aerolites = EnemyFactory.create_enemy("Aerolite", 5)

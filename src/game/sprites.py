@@ -80,7 +80,25 @@ class Bullet(Sprite):
 
     """docstring for Bullet"""
 
-    def __init__(self):
-        image = "sprites/rohenians/fire.png"
+    def __init__(self, image, dmg):
         super(Bullet, self).__init__(image)
         self.scale = 0.25
+        self.dmg = dmg
+
+
+class SpaceShipBullet(Bullet):
+
+    """docstring for Bullet"""
+
+    def __init__(self, dmg=10):
+        self.imagem = "sprites/spaceship/fire.png"
+        super(SpaceShipBullet, self).__init__(self.imagem, dmg)
+
+
+class RoheniansBullet(Bullet):
+
+    """docstring for Bullet"""
+
+    def __init__(self, dmg=1):
+        self.imagem = "sprites/rohenians/fire.png"
+        super(RoheniansBullet, self).__init__(self.imagem, dmg)
