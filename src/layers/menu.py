@@ -23,9 +23,44 @@ from cocos.menu import (Menu, MultipleMenuItem, MenuItem, ToggleMenuItem,
 from game.scenes import GameScene
 from configs import FONT
 import sound as soundex
+from engine.event import EventHandle
+from time import sleep
 
 
-class MainMenu(Menu):
+class JoypadMenuSuport(object):
+
+    """docstring for JoypadMenuSuport"""
+
+    def __init__(self):
+        super(JoypadMenuSuport, self).__init__()
+
+    def on_joyaxis_motion(self, joystick, axis, value):
+        if (axis is 'x') or (axis is 'hat_x'):
+            return
+        if (abs(value) > 0.1):
+            print axis, value
+        if axis is 'hat_y':
+            value *= -1
+        idx = self.selected_index
+        if (value > 0.4):
+            idx += 1
+        if (value < -0.4):
+            idx -= 1
+        if idx < 0:
+            idx = len(self.children) - 1
+        elif idx > len(self.children) - 1:
+            idx = 0
+        self._select_item(idx)
+
+    def on_joybutton_press(self, joystick, button):
+        print EventHandle()[button]
+        EventHandle().joystick.on_joyaxis_motion = EventHandle().void
+        EventHandle().joystick.on_joybutton_press = EventHandle().void
+        self._activate_item()
+        # return True
+
+
+class MainMenu(Menu, JoypadMenuSuport):
 
     """Class for Main Menu
 
@@ -101,8 +136,13 @@ class MainMenu(Menu):
         print "Choose your options"
         self.parent.switch_to(2)
 
+    def draw(self):
+        super(MainMenu, self).draw()
+        EventHandle().joystick.on_joyaxis_motion = self.on_joyaxis_motion
+        EventHandle().joystick.on_joybutton_press = self.on_joybutton_press
 
-class Credits(ScrollableLayer):
+
+class Credits(ScrollableLayer, JoypadMenuSuport):
 
     """docstring for Credits"""
 
@@ -142,8 +182,12 @@ Mateus Souza Fernandes
     def on_key_press(self, key, modifiers):
         self.parent.switch_to(0)
 
+    def draw(self):
+        super(Credits, self).draw()
+        EventHandle().joystick.on_joybutton_press = self.on_key_press
 
-class OptionsMenu(Menu):
+
+class OptionsMenu(Menu, JoypadMenuSuport):
 
     def __init__(self):
         super(OptionsMenu, self).__init__('SpaceWars')
@@ -219,3 +263,8 @@ class OptionsMenu(Menu):
     def on_music_volume(self, idx):
         vol = idx / 10.0
         soundex.music_volume(vol)
+
+    def draw(self):
+        super(OptionsMenu, self).draw()
+        EventHandle().joystick.on_joyaxis_motion = self.on_joyaxis_motion
+        EventHandle().joystick.on_joybutton_press = self.on_joybutton_press

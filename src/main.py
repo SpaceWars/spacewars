@@ -41,14 +41,6 @@ if __name__ == "__main__":
 
     signal.signal(signal.SIGINT, signal_handler)
     director.init(width=WIDTH, height=HEIGHT, caption='SpaceWars')
-    scene = Scene()
-    scene.add(BackgroundLayer('backgrounds/space_background.png'), z=0)
-    scene.add(MultiplexLayer(
-        MainMenu(),
-        Credits(),
-        OptionsMenu(),
-    ),
-        z=1)
     keyboard = key.KeyStateHandler()
     director.window.push_handlers(keyboard)
     EventHandle().keyboard = keyboard
@@ -58,6 +50,14 @@ if __name__ == "__main__":
         EventHandle().joystick.z = EventHandle().joystick.rz = -1
     except Exception, e:
         pass
+    scene = Scene()
+    scene.add(BackgroundLayer('backgrounds/space_background.png'), z=0)
+    scene.add(MultiplexLayer(
+        MainMenu(),
+        Credits(),
+        OptionsMenu(),
+    ),
+        z=1)
     print """
     SpaceWars  Copyright (C) 2015 Luiz Fernando Oliveira, Carlos Oliveira, Matheus Souza Fernandes
 
