@@ -22,6 +22,7 @@ from cocos.scene import Scene
 from engine.event import EventHandle
 from pyglet import resource, font
 from pyglet.window import key
+from pyglet import input
 from layers.base_layers import BackgroundLayer
 from layers.menu import MainMenu, Credits, OptionsMenu
 from configs import WIDTH, HEIGHT
@@ -51,6 +52,12 @@ if __name__ == "__main__":
     keyboard = key.KeyStateHandler()
     director.window.push_handlers(keyboard)
     EventHandle().keyboard = keyboard
+    try:
+        EventHandle().joystick = input.get_joysticks()[0]
+        EventHandle().joystick.open()
+        EventHandle().joystick.z = EventHandle().joystick.rz = -1
+    except Exception, e:
+        pass
     print """
     SpaceWars  Copyright (C) 2015 Luiz Fernando Oliveira, Carlos Oliveira, Matheus Souza Fernandes
 

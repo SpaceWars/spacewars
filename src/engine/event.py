@@ -21,6 +21,7 @@ class EventHandle(object):
     """docstring for EventHandle"""
 
     keyboard = None
+    joystick = None
 
     def __new__(cls):
         if not hasattr(cls, 'instance'):

@@ -21,6 +21,7 @@ from cocos import actions
 from engine.event import EventHandle
 from configs import WIDTH, HEIGHT
 import random
+from pyglet import resource
 
 
 class SpaceshipAction(actions.Move):
@@ -33,31 +34,77 @@ class SpaceshipAction(actions.Move):
         max_right = WIDTH - self.target.image.width * self.target.scale / 2
 
         # Run step function on the parent class.
-        super(SpaceshipAction, self).step(dt)
+        #     super(SpaceshipAction, self).step(dt)
 
         # Determine velocity based on keyboard inputs.
-        keyboard = EventHandle().keyboard
-        velocity_x = 0
-        velocity_y = 0
-        velocity_x = 200 * (keyboard[key.RIGHT] - keyboard[key.LEFT])
-
-        if self.target.position[0] < max_left:
-            self.target.position = (max_left, 100)
-
-        if self.target.position[0] > max_right:
-            self.target.position = (max_right, 100)
+        #     keyboard = EventHandle().keyboard
+        #     velocity_x = 0
+        #     velocity_y = 0
+        #     velocity_x = 200 * (keyboard[key.RIGHT] - keyboard[key.LEFT])
 
         # Set the object's velocity.
-        self.target.velocity = (velocity_x, velocity_y)
-        if keyboard[key.LEFT]:
-            self.target.move_left()
-        elif keyboard[key.RIGHT]:
-            self.target.move_right()
-        else:
-            self.target.center_spaceship()
+        #     self.target.velocity = (velocity_x, velocity_y)
+        #     if keyboard[key.LEFT]:
+        #         self.target.move_left()
+        #     elif keyboard[key.RIGHT]:
+        #         self.target.move_right()
+        #     else:
+        #         self.target.center_spaceship()
 
+        #     if keyboard[key.SPACE]:
+        # print "FIRE THIS MODAFOCKA!!!", dt, self.target.position, max_right
+
+        # Run step function on the parent class.
+        joystick = EventHandle().joystick
+        keyboard = EventHandle().keyboard
+        super(SpaceshipAction, self).step(dt)
+        error = 0.2
+        speed = 200
+
+        # Determine velocity based on keyboard inputs.
+        velocity_x = speed * (keyboard[key.RIGHT] - keyboard[key.LEFT])
+        velocity_y = speed * (keyboard[key.UP] - keyboard[key.DOWN])
+        self.target.velocity = (velocity_x, velocity_y)
         if keyboard[key.SPACE]:
             print "FIRE THIS MODAFOCKA!!!", dt, self.target.position, max_right
+
+        if joystick is not None:
+            speed = ((joystick.rz + 1) * 80) + speed
+            if (abs(joystick.rx) > error) or (abs(joystick.ry) > error):
+                self.target.velocity = (
+                    speed * joystick.rx, speed * -joystick.ry)
+            elif (abs(joystick.x) > error) or (abs(joystick.y) > error):
+                self.target.velocity = (
+                    speed * joystick.x, speed * -joystick.y)
+            elif (abs(joystick.hat_x) > error) or (abs(joystick.hat_y) > error):
+                self.target.velocity = (
+                    speed * joystick.hat_x, speed * joystick.hat_y)
+            if (True in joystick.buttons) or (joystick.z != -1) or (joystick.rz != -1):
+                print "FIRE THIS MODAFOCKA!!!", joystick.buttons
+
+        # Set the object's velocity.
+        if self.target.velocity[0] > 0:
+            self.target.image = resource.image(
+                'data/sprites/spaceship/right4.png')
+        elif self.target.velocity[0] < 0:
+            self.target.image = resource.image(
+                'data/sprites/spaceship/left4.png')
+        else:
+            self.target.image = resource.image(
+                'data/sprites/spaceship/center.png')
+
+        if self.target.position[0] < max_left:
+            self.target.position = (max_left, self.target.position[1])
+
+        if self.target.position[0] > max_right:
+            self.target.position = (max_right, self.target.position[1])
+
+        if self.target.position[1] < self.target.width / 2:
+            self.target.position = (
+                self.target.position[0], self.target.width / 2)
+
+        if self.target.position[1] > 150:
+            self.target.position = (self.target.position[0], 150)
 
 
 class AeroliteAction(actions.Move):
