@@ -57,7 +57,10 @@ class JoypadMenuSuport(object):
             print EventHandle()[button]
             EventHandle().joystick.on_joyaxis_motion = EventHandle().void
             EventHandle().joystick.on_joybutton_press = EventHandle().void
-            self._activate_item()
+            if EventHandle()[button] is 'B':
+                director.pop()
+            else:
+                self._activate_item()
         except Exception, e:
             pass
         # return True
@@ -227,6 +230,7 @@ class OptionsMenu(Menu, JoypadMenuSuport):
             'anchor_x': 'center',
             'color': FONT['white'],
         }
+        self.sound = 0
 
         self.menu_anchor_y = CENTER
         self.menu_anchor_x = CENTER
@@ -238,13 +242,13 @@ class OptionsMenu(Menu, JoypadMenuSuport):
             'SFX volume: ',
             self.on_sfx_volume,
             self.volumes,
-            int(soundex.sound_vol * len(self.volumes)))
+            self.sound)
         )
         items.append(MultipleMenuItem(
             'Music volume: ',
-            self.on_music_volume,
+            self.on_sfx_volume,
             self.volumes,
-            int(soundex.music_player.volume * len(self.volumes)))
+            self.sound)
         )
         items.append(
             ToggleMenuItem('Show FPS:', self.on_show_fps, director.show_FPS))
@@ -266,12 +270,7 @@ class OptionsMenu(Menu, JoypadMenuSuport):
         director.show_FPS = value
 
     def on_sfx_volume(self, idx):
-        vol = idx / 10.0
-        soundex.sound_volume(vol)
-
-    def on_music_volume(self, idx):
-        vol = idx / 10.0
-        soundex.music_volume(vol)
+        self.sound = (self.sound + idx) % 2
 
     def draw(self):
         super(OptionsMenu, self).draw()
