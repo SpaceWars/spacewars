@@ -53,10 +53,13 @@ class JoypadMenuSuport(object):
         self._select_item(idx)
 
     def on_joybutton_press(self, joystick, button):
-        print EventHandle()[button]
-        EventHandle().joystick.on_joyaxis_motion = EventHandle().void
-        EventHandle().joystick.on_joybutton_press = EventHandle().void
-        self._activate_item()
+        try:
+            print EventHandle()[button]
+            EventHandle().joystick.on_joyaxis_motion = EventHandle().void
+            EventHandle().joystick.on_joybutton_press = EventHandle().void
+            self._activate_item()
+        except Exception, e:
+            pass
         # return True
 
 
@@ -138,8 +141,11 @@ class MainMenu(Menu, JoypadMenuSuport):
 
     def draw(self):
         super(MainMenu, self).draw()
-        EventHandle().joystick.on_joyaxis_motion = self.on_joyaxis_motion
-        EventHandle().joystick.on_joybutton_press = self.on_joybutton_press
+        try:
+            EventHandle().joystick.on_joyaxis_motion = self.on_joyaxis_motion
+            EventHandle().joystick.on_joybutton_press = self.on_joybutton_press
+        except Exception, e:
+            pass
 
 
 class Credits(ScrollableLayer, JoypadMenuSuport):
@@ -184,7 +190,10 @@ Mateus Souza Fernandes
 
     def draw(self):
         super(Credits, self).draw()
-        EventHandle().joystick.on_joybutton_press = self.on_key_press
+        try:
+            EventHandle().joystick.on_joybutton_press = self.on_key_press
+        except Exception, e:
+            pass
 
 
 class OptionsMenu(Menu, JoypadMenuSuport):
@@ -266,5 +275,8 @@ class OptionsMenu(Menu, JoypadMenuSuport):
 
     def draw(self):
         super(OptionsMenu, self).draw()
-        EventHandle().joystick.on_joyaxis_motion = self.on_joyaxis_motion
-        EventHandle().joystick.on_joybutton_press = self.on_joybutton_press
+        try:
+            EventHandle().joystick.on_joyaxis_motion = self.on_joyaxis_motion
+            EventHandle().joystick.on_joybutton_press = self.on_joybutton_press
+        except Exception, e:
+            pass
