@@ -49,10 +49,16 @@ class SpaceshipAction(actions.Move):
         self.target.velocity = (velocity_x, velocity_y)
         if keyboard[key.SPACE]:
             bullet_time = self.target.bullets.next()
-            self.target.parent.add(bullet_time)
+            bullet_time.stop()
+            bullet_time.sprite_move_action = actions.MoveTo(
+                (self.target.position[0], HEIGHT * 1.1), 2)
             bullet_time.position = self.target.position
-            bullet_time.do(
-                actions.MoveTo((self.target.position[0], HEIGHT * 1.2), 2))
+            try:
+                self.target.parent.remove(bullet_time)
+            except Exception, e:
+                pass
+            self.target.parent.add(bullet_time)
+            bullet_time.do(bullet_time.sprite_move_action)
 
         if joystick is not None:
             speed = ((joystick.rz + 1) * 80) + speed
@@ -68,11 +74,16 @@ class SpaceshipAction(actions.Move):
             if (True in joystick.buttons) or (joystick.z != -1) or (joystick.rz != -1):
                 # print "FIRE THIS MODAFOCKA!!!", joystick.buttons
                 bullet_time = self.target.bullets.next()
-                self.target.parent.add(bullet_time)
+                bullet_time.stop()
+                bullet_time.sprite_move_action = actions.MoveTo(
+                    (self.target.position[0], HEIGHT * 1.1), 2)
                 bullet_time.position = self.target.position
-                bullet_time.do(
-                    actions.MoveTo((self.target.position[0], HEIGHT * 1.2), 2))
-
+                try:
+                    self.target.parent.remove(bullet_time)
+                except Exception, e:
+                    pass
+                self.target.parent.add(bullet_time)
+                bullet_time.do(bullet_time.sprite_move_action)
         # Set the object's velocity.
         if self.target.velocity[0] > 0:
             self.target.image = resource.image(

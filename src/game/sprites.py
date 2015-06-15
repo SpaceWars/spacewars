@@ -87,6 +87,7 @@ class Bullet(Sprite):
     """docstring for Bullet"""
 
     dmg = 0.0
+    sprite_move_action = None
 
     def __init__(self, image, dmg=0.1):
         super(Bullet, self).__init__(image)

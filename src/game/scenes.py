@@ -45,9 +45,9 @@ class GameScene(Scene):
         clock.schedule_interval(self.set_direction, .8)
 
     def recharge(self):
-        FireFactory.create_bullets('hero', qnt=100)
+        FireFactory.create_bullets('hero', qnt=90)
         bullets = FireFactory().delivery_bullets(
-            'hero', 100, target=self.spaceship)
+            'hero', 90, target=self.spaceship)
         self.spaceship.bullets = cycle(bullets)
 
     def new_game(self):
