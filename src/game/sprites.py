@@ -43,6 +43,10 @@ class SpaceShipSprite(Sprite):
     def center_spaceship(self):
         self.image = resource.image('data/sprites/spaceship/center.png')
 
+    @classmethod
+    def get_position(cls):
+        return cls.position
+
 
 class Enemies(Sprite):
 
@@ -82,19 +86,23 @@ class Bullet(Sprite):
 
     dmg = 0.0
 
-    def __init__(self, image, dmg):
+    def __init__(self, image, dmg=0.1):
         super(Bullet, self).__init__(image)
         self.scale = 0.25
         self.dmg = dmg
+
+    def info(self):
+        return "Dmg: %f\nFather: %s\nPosition: %s\n-----------\n" % (self.dmg, self.father, self.position)
 
 
 class SpaceShipBullet(Bullet):
 
     """docstring for Bullet"""
 
-    def __init__(self, dmg=10):
+    def __init__(self, father=None, dmg=10):
         self.imagem = "sprites/spaceship/fire.png"
         super(SpaceShipBullet, self).__init__(self.imagem, dmg)
+        self.velocity = (0, 200)
 
 
 class RoheniansBullet(Bullet):

@@ -42,7 +42,7 @@ class FireFactory(object):
                 cls.ammo['enemies'].append(RoheniansBullet())
 
     @classmethod
-    def delivery_bullets(cls, bullet_type, qnt=50):
+    def delivery_bullets(cls, bullet_type, qnt=50, target=None):
         if len(cls.ammo[bullet_type]) < qnt:
             cls.create_bullets(
                 bullet_type, int(qnt) - len(cls.ammo[bullet_type]))
@@ -50,11 +50,14 @@ class FireFactory(object):
         if bullet_type in hero:
             return_list = cls.ammo["hero"][:qnt]
             cls.ammo["hero"] = cls.ammo["hero"][qnt:]
-            return return_list
         elif bullet_type in rohenian:
             return_list = cls.ammo["enemies"][:qnt]
             cls.ammo["enemies"] = cls.ammo["enemies"][qnt:]
-            return return_list
+
+        for i in return_list:
+            i.father = target
+            i.position = target.position
+        return return_list
 
     @classmethod
     def many_ammo(cls):

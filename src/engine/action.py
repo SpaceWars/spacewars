@@ -66,7 +66,14 @@ class SpaceshipAction(actions.Move):
         velocity_y = speed * (keyboard[key.UP] - keyboard[key.DOWN])
         self.target.velocity = (velocity_x, velocity_y)
         if keyboard[key.SPACE]:
-            print "FIRE THIS MODAFOCKA!!!", dt, self.target.position, max_right
+            if len(self.target.bullets):
+                print "FIRE THIS MODAFOCKA!!!", dt, self.target.position, max_right, self.target.parent
+                self.target.parent.add(self.target.bullets[0])
+                self.target.bullets[0].position = self.target.position
+                self.target.bullets[0].do(actions.Move(10))
+                self.target.bullets.remove(self.target.bullets[0])
+            else:
+                self.target.parent.recharge()
 
         if joystick is not None:
             speed = ((joystick.rz + 1) * 80) + speed
@@ -81,6 +88,11 @@ class SpaceshipAction(actions.Move):
                     speed * joystick.hat_x, speed * joystick.hat_y)
             if (True in joystick.buttons) or (joystick.z != -1) or (joystick.rz != -1):
                 print "FIRE THIS MODAFOCKA!!!", joystick.buttons
+                self.target.parent.add(self.target.bullets[0])
+                self.target.bullets[0].velocity = (0, 50)
+                self.target.bullets[0].position = self.target.position
+                self.target.bullets[0].do(actions.Move())
+                self.target.bullets = self.target.bullets[:0]
 
         # Set the object's velocity.
         if self.target.velocity[0] > 0:
@@ -118,3 +130,13 @@ class AeroliteAction(actions.Move):
         if self.target.position[1] < -self.target.image.height:
             self.target.position = (
                 random.randint(0, WIDTH), HEIGHT + self.target.image.height)
+
+
+class FireAction(actions.Move):
+
+    """docstring for FireAction"""
+
+    def step(self, dt):
+        super(FireAction, self).step(dt)
+
+        velocity_x, velocity_y = self.target.velocity
