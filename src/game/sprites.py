@@ -15,7 +15,7 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 """
 from cocos.sprite import Sprite
-from cocos.actions import MoveTo
+from cocos.actions import *
 from configs import WIDTH, HEIGHT
 from pyglet import resource
 import random
@@ -33,6 +33,8 @@ class SpaceShipSprite(Sprite):
         self.velocity = (0, 0)
         self.do(MoveTo((WIDTH / 2, 100), 2))
         self.do(SpaceshipAction())
+        self.bullets_used = []
+        self.bullets = []
 
     def move_left(self):
         self.image = resource.image('data/sprites/spaceship/left4.png')
@@ -102,7 +104,7 @@ class SpaceShipBullet(Bullet):
     def __init__(self, father=None, dmg=10):
         self.imagem = "sprites/spaceship/fire.png"
         super(SpaceShipBullet, self).__init__(self.imagem, dmg)
-        self.velocity = (0, 200)
+        self.velocity = (0, 1000)
 
 
 class RoheniansBullet(Bullet):

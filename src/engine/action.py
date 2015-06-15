@@ -34,25 +34,7 @@ class SpaceshipAction(actions.Move):
         max_right = WIDTH - self.target.image.width * self.target.scale / 2
 
         # Run step function on the parent class.
-        #     super(SpaceshipAction, self).step(dt)
-
-        # Determine velocity based on keyboard inputs.
-        #     keyboard = EventHandle().keyboard
-        #     velocity_x = 0
-        #     velocity_y = 0
-        #     velocity_x = 200 * (keyboard[key.RIGHT] - keyboard[key.LEFT])
-
-        # Set the object's velocity.
-        #     self.target.velocity = (velocity_x, velocity_y)
-        #     if keyboard[key.LEFT]:
-        #         self.target.move_left()
-        #     elif keyboard[key.RIGHT]:
-        #         self.target.move_right()
-        #     else:
-        #         self.target.center_spaceship()
-
-        #     if keyboard[key.SPACE]:
-        # print "FIRE THIS MODAFOCKA!!!", dt, self.target.position, max_right
+        super(SpaceshipAction, self).step(dt)
 
         # Run step function on the parent class.
         joystick = EventHandle().joystick
@@ -66,14 +48,11 @@ class SpaceshipAction(actions.Move):
         velocity_y = speed * (keyboard[key.UP] - keyboard[key.DOWN])
         self.target.velocity = (velocity_x, velocity_y)
         if keyboard[key.SPACE]:
-            if len(self.target.bullets):
-                print "FIRE THIS MODAFOCKA!!!", dt, self.target.position, max_right, self.target.parent
-                self.target.parent.add(self.target.bullets[0])
-                self.target.bullets[0].position = self.target.position
-                self.target.bullets[0].do(actions.Move(10))
-                self.target.bullets.remove(self.target.bullets[0])
-            else:
-                self.target.parent.recharge()
+            bullet_time = self.target.bullets.next()
+            self.target.parent.add(bullet_time)
+            bullet_time.position = self.target.position
+            bullet_time.do(
+                actions.MoveTo((self.target.position[0], HEIGHT * 1.2), 2))
 
         if joystick is not None:
             speed = ((joystick.rz + 1) * 80) + speed
@@ -87,12 +66,12 @@ class SpaceshipAction(actions.Move):
                 self.target.velocity = (
                     speed * joystick.hat_x, speed * joystick.hat_y)
             if (True in joystick.buttons) or (joystick.z != -1) or (joystick.rz != -1):
-                print "FIRE THIS MODAFOCKA!!!", joystick.buttons
-                self.target.parent.add(self.target.bullets[0])
-                self.target.bullets[0].velocity = (0, 50)
-                self.target.bullets[0].position = self.target.position
-                self.target.bullets[0].do(actions.Move())
-                self.target.bullets = self.target.bullets[:0]
+                # print "FIRE THIS MODAFOCKA!!!", joystick.buttons
+                bullet_time = self.target.bullets.next()
+                self.target.parent.add(bullet_time)
+                bullet_time.position = self.target.position
+                bullet_time.do(
+                    actions.MoveTo((self.target.position[0], HEIGHT * 1.2), 2))
 
         # Set the object's velocity.
         if self.target.velocity[0] > 0:
@@ -107,15 +86,13 @@ class SpaceshipAction(actions.Move):
 
         if self.target.position[0] < max_left:
             self.target.position = (max_left, self.target.position[1])
-
-        if self.target.position[0] > max_right:
+        elif self.target.position[0] > max_right:
             self.target.position = (max_right, self.target.position[1])
 
         if self.target.position[1] < self.target.width / 2:
             self.target.position = (
                 self.target.position[0], self.target.width / 2)
-
-        if self.target.position[1] > 150:
+        elif self.target.position[1] > 150:
             self.target.position = (self.target.position[0], 150)
 
 

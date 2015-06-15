@@ -26,6 +26,7 @@ from cocos.actions import MoveTo
 from configs import WIDTH, HEIGHT
 from engine.event import EventHandle
 import random
+from itertools import cycle
 
 
 class GameScene(Scene):
@@ -45,8 +46,9 @@ class GameScene(Scene):
 
     def recharge(self):
         FireFactory.create_bullets('hero', qnt=100)
-        self.spaceship.bullets = FireFactory().delivery_bullets(
-            'hero', 30, target=self.spaceship)
+        bullets = FireFactory().delivery_bullets(
+            'hero', 100, target=self.spaceship)
+        self.spaceship.bullets = cycle(bullets)
 
     def new_game(self):
         self.add(self.background, z=0)
