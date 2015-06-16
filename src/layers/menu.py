@@ -29,9 +29,6 @@ class JoypadMenuSuport(object):
 
     """docstring for JoypadMenuSuport"""
 
-    def __init__(self):
-        super(JoypadMenuSuport, self).__init__()
-
     def on_joyaxis_motion(self, joystick, axis, value):
         if (axis is 'x') or (axis is 'hat_x'):
             return
@@ -129,6 +126,7 @@ class MainMenu(Menu, JoypadMenuSuport):
     def new_game(self):
         print "New game selected"
         game_scene = GameScene()
+        self.on_joybutton_press = EventHandle().void
         game_scene.parent = self.parent.parent
         director.push(FadeBLTransition(game_scene.new_game(), 1.5))
 

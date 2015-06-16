@@ -14,25 +14,23 @@ but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 """
+
 from itertools import cycle
 import random
 
 from cocos.actions import MoveTo
-from cocos.director import director
+
 from cocos.scene import Scene
 from configs import WIDTH, HEIGHT
 from engine.enemy import EnemyFactory
-from engine.event import EventHandle
 from engine.gunfire import FireFactory
 from game.sprites import SpaceShipSprite
 from layers.base_layers import BackgroundLayer
 from pyglet import clock
-from pyglet.window import key
+# from layers.menu import *
 
 
 class GameScene(Scene):
-
-    is_event_handler = True
 
     def __init__(self):
         super(GameScene, self).__init__()
@@ -76,16 +74,3 @@ class GameScene(Scene):
             width = random.randint(-WIDTH, WIDTH)
             rohenian.do(
                 MoveTo((width, -rohenian.image.height), random.randint(5, 8)))
-
-    def on_key_press(self, keys, mod):
-        if keys == key.ESCAPE:
-            clock.unschedule(self.__set_direction)
-            clock.unschedule(self.re_launch_aero)
-            clock.unschedule(self.re_launch_rohenian)
-            print len(self.aerolites)
-            director.pop()
-        elif keys == key.SPACE:
-            print "FIRE!!!"
-
-        print key.symbol_string(keys)
-        print EventHandle().keyboard
