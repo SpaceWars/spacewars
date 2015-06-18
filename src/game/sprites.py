@@ -50,16 +50,16 @@ class SpaceShipSprite(Sprite):
         return cls.position
 
 
-class Enemies(Sprite):
+class Enemy(Sprite):
 
-    """docstring for Enemies"""
+    """docstring for Enemy"""
 
     def __init__(self, arg):
-        super(Enemies, self).__init__(arg)
+        super(Enemy, self).__init__(arg)
         self.velocity = (0, 0)
 
 
-class AeroliteSprite(Enemies):
+class AeroliteSprite(Enemy):
 
     def __init__(self, width=WIDTH / 2, height=2 * HEIGHT):
         image = 'sprites/aerolite/aero1.png'
@@ -71,7 +71,7 @@ class AeroliteSprite(Enemies):
         self.do(AeroliteAction())
 
 
-class RohenianSprite(Enemies):
+class RohenianSprite(Enemy):
 
     def __init__(self):
         image = "sprites/rohenians/F5S1.png"

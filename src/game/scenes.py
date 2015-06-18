@@ -41,10 +41,10 @@ class GameScene(Scene):
         EnemyFactory.populate_enemy("Rohenian", qnt=15)
         self.aerolites = EnemyFactory.create_enemy("Aerolite", 5)
         self.rohenians = EnemyFactory.create_enemy("Rohenian", 10)
-        self.recharge()
-        clock.schedule_interval(self.set_direction, .8)
+        self.__recharge()
+        clock.schedule_interval(self.__set_direction, .8)
 
-    def recharge(self):
+    def __recharge(self):
         FireFactory.create_bullets('hero', qnt=90)
         bullets = FireFactory().delivery_bullets(
             'hero', 90, target=self.spaceship)
@@ -67,7 +67,7 @@ class GameScene(Scene):
 
         return self
 
-    def set_direction(self, *args):
+    def __set_direction(self, *args):
 
         for rohenian in self.rohenians:
             if rohenian.position[1] < 0:
@@ -78,7 +78,7 @@ class GameScene(Scene):
 
     def on_key_press(self, keys, mod):
         if keys == key.ESCAPE:
-            clock.unschedule(self.set_direction)
+            clock.unschedule(self.__set_direction)
             clock.unschedule(self.re_launch_aero)
             clock.unschedule(self.re_launch_rohenian)
             print len(self.aerolites)
