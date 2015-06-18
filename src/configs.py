@@ -19,6 +19,7 @@ import os
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 DATA_DIR = os.path.join(BASE_DIR, 'src/data')
 
+# Some font configuration
 FONT = {'header': 'Orbitron',
         'header_size': 60,
         'body': 'Titillium Web',

@@ -29,35 +29,40 @@ from pyglet.window import key
 
 
 def signal_handler(signal_received, frame):
+    """ Handle Ctrl + C signal """
     if signal_received is signal.SIGINT:
         # erase the ^C on Terminal
         print "\r  "
         exit(0)
 
 if __name__ == "__main__":
+    # Add pyglet resources directories
     resource.path.append('data')
     resource.reindex()
     font.add_directory('data/fonts')
 
     signal.signal(signal.SIGINT, signal_handler)
-    director.init(width=WIDTH, height=HEIGHT, caption='SpaceWars')
+
     keyboard = key.KeyStateHandler()
-    director.window.push_handlers(keyboard)
     EventHandle().keyboard = keyboard
+
+    director.init(width=WIDTH, height=HEIGHT, caption='SpaceWars')
+    director.window.push_handlers(keyboard)
+
     try:
+        # Check if joystick is connected
         EventHandle().joystick = input.get_joysticks()[0]
         EventHandle().joystick.open()
         EventHandle().joystick.z = EventHandle().joystick.rz = -1
     except Exception, e:
         pass
+
+    # Create a initial menu scene
     scene = Scene()
     scene.add(BackgroundLayer('backgrounds/space_background.png'), z=0)
-    scene.add(MultiplexLayer(
-        MainMenu(),
-        Credits(),
-        OptionsMenu(),
-    ),
-        z=1)
+    scene.add(MultiplexLayer(MainMenu(),
+                             Credits(),
+                             OptionsMenu()), z=1)
     print """
     SpaceWars  Copyright (C) 2015 Luiz Fernando Oliveira, Carlos Oliveira,
     Matheus Souza Fernandes
