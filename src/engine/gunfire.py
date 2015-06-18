@@ -22,7 +22,13 @@ rohenian = ['Rohenian', 'rohenian', 'enemies', 'ro']
 
 class FireFactory(object):
 
-    """docstring for FireFactory"""
+    """Create Bullets. FireFactory can create SpaceShip and Rohenians bullets.
+
+    To create Spaceship bullets: FireFactory.delivery_bullets('spaceship'). By
+    default, it returns a list with 50 bullets.
+
+    To create Rohenians bullets: FireFactory.delivery_bullets('rohenian'). By
+    default, it returns a list with 50 bullets."""
 
     ammo = {'hero': [], 'enemies': []}
 
@@ -33,6 +39,9 @@ class FireFactory(object):
 
     @classmethod
     def create_bullets(cls, bullet_type, qnt=50):
+        """ Populate a pool of objects, maybe of SpaceShipBullet or
+        RoheniansBullet"""
+
         if bullet_type in hero:
             for x in xrange(0, qnt):
                 cls.ammo['hero'].append(SpaceShipBullet())
@@ -42,6 +51,9 @@ class FireFactory(object):
 
     @classmethod
     def delivery_bullets(cls, bullet_type, qnt=50, target=None):
+        """ Returns a list of a specific bullet type. The bullet type is a
+        mandatory parameter and can be 'spaceship like' or 'rohenian like'"""
+
         if len(cls.ammo[bullet_type]) < qnt:
             cls.create_bullets(
                 bullet_type, int(qnt) - len(cls.ammo[bullet_type]))
@@ -60,6 +72,8 @@ class FireFactory(object):
 
     @classmethod
     def many_ammo(cls):
+        """ Returns a status of the pool of objets """
+
         ret = ''
         for key in cls.ammo:
             ret += "%s: %d\n" % (key, len(cls.ammo[key]))
