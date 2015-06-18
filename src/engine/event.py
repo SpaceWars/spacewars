@@ -18,12 +18,13 @@ GNU General Public License for more details.
 
 class EventHandle(object):
 
-    """docstring for EventHandle"""
+    """ Class that hanle keyboard/joystick input events """
 
     keyboard = None
     joystick = None
 
     def __new__(cls):
+        # Singleton instance
         if not hasattr(cls, 'instance'):
             cls.instance = super(EventHandle, cls).__new__(cls)
         return cls.instance
