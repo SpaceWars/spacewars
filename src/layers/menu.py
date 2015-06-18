@@ -113,7 +113,7 @@ class MainMenu(Menu, JoypadMenuSuport):
 
 class Credits(ScrollableLayer, JoypadMenuSuport):
 
-    """docstring for Credits"""
+    """ Credits menu """
 
     is_event_handler = True
 
@@ -160,6 +160,8 @@ Mateus Souza Fernandes
 
 
 class OptionsMenu(Menu, JoypadMenuSuport):
+
+    """ Options menu """
 
     def __init__(self):
         super(OptionsMenu, self).__init__('SpaceWars')
