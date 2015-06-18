@@ -15,19 +15,16 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 """
 
-from itertools import cycle
-import random
-
 from cocos.actions import MoveTo
-
 from cocos.scene import Scene
 from configs import WIDTH, HEIGHT
 from engine.enemy import EnemyFactory
 from engine.gunfire import FireFactory
 from game.sprites import SpaceShipSprite
+from itertools import cycle
 from layers.base_layers import BackgroundLayer
 from pyglet import clock
-# from layers.menu import *
+import random
 
 
 class GameScene(Scene):
