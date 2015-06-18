@@ -14,6 +14,8 @@ but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 """
+from itertools import cycle
+import random
 
 from cocos.actions import MoveTo
 from cocos.scene import Scene
@@ -21,10 +23,8 @@ from configs import WIDTH, HEIGHT
 from engine.enemy import EnemyFactory
 from engine.gunfire import FireFactory
 from game.sprites import SpaceShipSprite
-from itertools import cycle
 from layers.base_layers import BackgroundLayer
 from pyglet import clock
-import random
 
 
 class GameScene(Scene):
@@ -41,21 +41,29 @@ class GameScene(Scene):
         clock.schedule_interval(self.__set_direction, .8)
 
     def __recharge(self):
+        """ Recharge the spaceship weapon, requesting new bullets to the
+        engine.gunfire.FireFactory"""
+
         FireFactory.create_bullets('hero', qnt=90)
         bullets = FireFactory().delivery_bullets(
             'hero', 90, target=self.spaceship)
         self.spaceship.bullets = cycle(bullets)
 
     def new_game(self):
+        """ Create a new game scene, and add some elements in scene, like the
+        rohenians, aerolites and spaceship. """
+
         self.add(self.background, z=0)
         self.add(self.spaceship)
 
         for aero in self.aerolites:
+            # Set a randomic  initial position to aerolites
             width = random.randint(0, WIDTH)
             aero.do(MoveTo((width, -aero.image.height), random.randint(7, 15)))
             self.add(aero)
 
         for rohenian in self.rohenians:
+            # Set a randomic  initial position to rohinians
             width = random.randint(-WIDTH, 2 * WIDTH)
             rohenian.do(
                 MoveTo((width, -rohenian.image.height), random.randint(5, 8)))
@@ -64,6 +72,8 @@ class GameScene(Scene):
         return self
 
     def __set_direction(self, *args):
+        """ To difficult the game, the rohinians change their directions
+        randomly, in this method. """
 
         for rohenian in self.rohenians:
             if rohenian.position[1] < 0:
