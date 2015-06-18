@@ -23,29 +23,34 @@ aerolite = ['Aerolite', 'aerolite', 'aero', 'pedra', 'meteoro']
 
 class EnemyFactory(object):
 
-    """docstring for EnemyFactory"""
+    """ Create enemies. EnemyFactory can create Rohenian and Aerolites enemies.
+    To create Rohenian enemy: EnemyFactory.create_enemy('Rohenian', [qnt=1])
+    To create Aerolite enemy: EnemyFactory.create_enemy('Aerolite', [qnt=1])"""
+
     enemy_list = {"Rohenian": [], "Aerolite": []}
 
     def __new__(cls):
+        # Singleton instance
         if not hasattr(cls, 'instance'):
             cls.instance = super(EnemyFactory, cls).__new__(cls)
-        cls.empty = True
+        cls.is_empty = True
         return cls.instance
 
     @classmethod
     def populate_enemy(cls, enemy_type, qnt=1):
+        """ Populate pool of objects """
 
         if enemy_type in rohenian:
             for x in xrange(0, qnt):
                 cls.enemy_list["Rohenian"].append(
                     Rohenian())
-            cls.empty = False
+            cls.is_empty = False
             return
         if enemy_type in aerolite:
             for x in xrange(0, qnt):
                 cls.enemy_list["Aerolite"].append(
                     Aerolite())
-            cls.empty = False
+            cls.is_empty = False
             return
         assert 0, "Bad enemy creation: " + enemy_type
 
@@ -63,13 +68,13 @@ class EnemyFactory(object):
             return_list = cls.enemy_list["Rohenian"][:qnt]
             cls.enemy_list["Rohenian"] = cls.enemy_list["Rohenian"][qnt:]
             if len(cls.enemy_list[enemy_type]) is 0:
-                cls.empty = True
+                cls.is_empty = True
             return return_list
         if enemy_type in aerolite:
             return_list = cls.enemy_list["Aerolite"][:qnt]
             cls.enemy_list["Aerolite"] = cls.enemy_list["Aerolite"][qnt:]
             if len(cls.enemy_list[enemy_type]) is 0:
-                cls.empty = True
+                cls.is_empty = True
             return return_list
         assert 0, "Bad enemy creation: " + enemy_type
 
