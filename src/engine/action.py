@@ -57,12 +57,15 @@ class SpaceshipAction(actions.Move):
         self.__bound_limits()
 
     def __set_velocity_with_keyboard(self, keyboard):
-        # Determine velocity based on keyboard inputs.
+        """ Determine velocity based on keyboard inputs. """
+
         velocity_x = self.speed * (keyboard[key.RIGHT] - keyboard[key.LEFT])
         velocity_y = self.speed * (keyboard[key.UP] - keyboard[key.DOWN])
         self.target.velocity = (velocity_x, velocity_y)
 
     def __set_velocity_with_joystick(self, joystick):
+        """ Determine velocity based on joystick inputs """
+
         self.speed = ((joystick.rz + 1) * 80) + self.speed
         if (abs(joystick.rx) > self.error) \
            or (abs(joystick.ry) > self.error):
@@ -91,6 +94,8 @@ class SpaceshipAction(actions.Move):
         bullet_time.do(bullet_time.sprite_move_action)
 
     def __set_movement_image(self):
+        """ Changes sprite image depending of spaceship movement """
+
         if self.target.velocity[0] > 0:
             self.target.image = resource.image(
                 'data/sprites/spaceship/right4.png')
@@ -102,6 +107,8 @@ class SpaceshipAction(actions.Move):
                 'data/sprites/spaceship/center.png')
 
     def __bound_limits(self):
+        """ Check if the spaceship is inside a valid position (bottom) """
+
         if self.target.position[0] < self.max_left:
             self.target.position = (self.max_left, self.target.position[1])
         elif self.target.position[0] > self.max_right:
@@ -116,6 +123,8 @@ class SpaceshipAction(actions.Move):
 
 class AeroliteAction(actions.Move):
 
+    """ Defines the aerolite movement pattern """
+
     def step(self, dt):
         super(AeroliteAction, self).step(dt)
 
@@ -129,9 +138,10 @@ class AeroliteAction(actions.Move):
 
 class FireAction(actions.Move):
 
-    """docstring for FireAction"""
+    """ Defines the fire bullet movement pattern """
 
     def step(self, dt):
         super(FireAction, self).step(dt)
 
         velocity_x, velocity_y = self.target.velocity
+        print velocity_x, velocity_y
