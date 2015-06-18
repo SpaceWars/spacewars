@@ -14,12 +14,13 @@ but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 """
-from cocos.sprite import Sprite
-from cocos.actions import *
-from configs import WIDTH, HEIGHT
-from pyglet import resource
 import random
+
+from cocos.actions import MoveTo
+from cocos.sprite import Sprite
+from configs import WIDTH, HEIGHT
 from engine.action import AeroliteAction, SpaceshipAction
+from pyglet import resource
 
 
 class SpaceShipSprite(Sprite):
@@ -95,7 +96,10 @@ class Bullet(Sprite):
         self.dmg = dmg
 
     def info(self):
-        return "Dmg: %f\nFather: %s\nPosition: %s\n-----------\n" % (self.dmg, self.father, self.position)
+        info = "Dmg: %f\nFather: %s\nPosition: %s" % (self.dmg,
+                                                      self.father,
+                                                      self.position)
+        return info + '\n-------------------\n'
 
 
 class SpaceShipBullet(Bullet):

@@ -14,14 +14,13 @@ but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 """
-
-
-from pyglet.window import key
-from cocos import actions
-from engine.event import EventHandle
-from configs import WIDTH, HEIGHT
 import random
+
+from cocos import actions
+from configs import WIDTH, HEIGHT
+from engine.event import EventHandle
 from pyglet import resource
+from pyglet.window import key
 
 
 class SpaceshipAction(actions.Move):
@@ -55,7 +54,7 @@ class SpaceshipAction(actions.Move):
             bullet_time.position = self.target.position
             try:
                 self.target.parent.remove(bullet_time)
-            except Exception, e:
+            except Exception:
                 pass
             self.target.parent.add(bullet_time)
             bullet_time.do(bullet_time.sprite_move_action)
@@ -68,10 +67,13 @@ class SpaceshipAction(actions.Move):
             elif (abs(joystick.x) > error) or (abs(joystick.y) > error):
                 self.target.velocity = (
                     speed * joystick.x, speed * -joystick.y)
-            elif (abs(joystick.hat_x) > error) or (abs(joystick.hat_y) > error):
+            elif (abs(joystick.hat_x) > error) or \
+                 (abs(joystick.hat_y) > error):
                 self.target.velocity = (
                     speed * joystick.hat_x, speed * joystick.hat_y)
-            if (True in joystick.buttons) or (joystick.z != -1) or (joystick.rz != -1):
+            if (True in joystick.buttons) or \
+               (joystick.z != -1) or \
+               (joystick.rz != -1):
                 # print "FIRE THIS MODAFOCKA!!!", joystick.buttons
                 bullet_time = self.target.bullets.next()
                 bullet_time.stop()
@@ -80,7 +82,7 @@ class SpaceshipAction(actions.Move):
                 bullet_time.position = self.target.position
                 try:
                     self.target.parent.remove(bullet_time)
-                except Exception, e:
+                except Exception:
                     pass
                 self.target.parent.add(bullet_time)
                 bullet_time.do(bullet_time.sprite_move_action)

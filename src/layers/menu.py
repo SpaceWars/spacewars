@@ -15,16 +15,14 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 """
 from cocos.director import director
-from cocos.text import Label
 from cocos.layer import ScrollableLayer
-from cocos.scenes.transitions import FadeBLTransition
 from cocos.menu import (Menu, MultipleMenuItem, MenuItem, ToggleMenuItem,
                         shake, shake_back, CENTER)
-from game.scenes import GameScene
+from cocos.scenes.transitions import FadeBLTransition
+from cocos.text import Label
 from configs import FONT
-import sound as soundex
 from engine.event import EventHandle
-from time import sleep
+from game.scenes import GameScene
 
 
 class JoypadMenuSuport(object):
@@ -61,7 +59,7 @@ class JoypadMenuSuport(object):
                 director.pop()
             else:
                 self._activate_item()
-        except Exception, e:
+        except Exception:
             pass
         # return True
 
@@ -147,7 +145,7 @@ class MainMenu(Menu, JoypadMenuSuport):
         try:
             EventHandle().joystick.on_joyaxis_motion = self.on_joyaxis_motion
             EventHandle().joystick.on_joybutton_press = self.on_joybutton_press
-        except Exception, e:
+        except Exception:
             pass
 
 
@@ -195,7 +193,7 @@ Mateus Souza Fernandes
         super(Credits, self).draw()
         try:
             EventHandle().joystick.on_joybutton_press = self.on_key_press
-        except Exception, e:
+        except Exception:
             pass
 
 
@@ -277,5 +275,5 @@ class OptionsMenu(Menu, JoypadMenuSuport):
         try:
             EventHandle().joystick.on_joyaxis_motion = self.on_joyaxis_motion
             EventHandle().joystick.on_joybutton_press = self.on_joybutton_press
-        except Exception, e:
+        except Exception:
             pass

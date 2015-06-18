@@ -16,16 +16,16 @@ GNU General Public License for more details.
 """
 import signal
 
-from cocos.layer import MultiplexLayer
 from cocos.director import director
+from cocos.layer import MultiplexLayer
 from cocos.scene import Scene
+from configs import WIDTH, HEIGHT
 from engine.event import EventHandle
-from pyglet import resource, font
-from pyglet.window import key
-from pyglet import input
 from layers.base_layers import BackgroundLayer
 from layers.menu import MainMenu, Credits, OptionsMenu
-from configs import WIDTH, HEIGHT
+from pyglet import input
+from pyglet import resource, font
+from pyglet.window import key
 
 
 def signal_handler(signal_received, frame):
@@ -59,7 +59,8 @@ if __name__ == "__main__":
     ),
         z=1)
     print """
-    SpaceWars  Copyright (C) 2015 Luiz Fernando Oliveira, Carlos Oliveira, Matheus Souza Fernandes
+    SpaceWars  Copyright (C) 2015 Luiz Fernando Oliveira, Carlos Oliveira,
+    Matheus Souza Fernandes
 
     This program comes with ABSOLUTELY NO WARRANTY; for details type `show w'.
     This is free software, and you are welcome to redistribute it

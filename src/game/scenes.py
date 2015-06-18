@@ -14,19 +14,20 @@ but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 """
-from pyglet.window import key
-from cocos.scene import Scene
-from layers.base_layers import BackgroundLayer
-from game.sprites import SpaceShipSprite
-from engine.enemy import EnemyFactory
-from engine.gunfire import FireFactory
-from pyglet import clock
-from cocos.director import director
-from cocos.actions import MoveTo
-from configs import WIDTH, HEIGHT
-from engine.event import EventHandle
-import random
 from itertools import cycle
+import random
+
+from cocos.actions import MoveTo
+from cocos.director import director
+from cocos.scene import Scene
+from configs import WIDTH, HEIGHT
+from engine.enemy import EnemyFactory
+from engine.event import EventHandle
+from engine.gunfire import FireFactory
+from game.sprites import SpaceShipSprite
+from layers.base_layers import BackgroundLayer
+from pyglet import clock
+from pyglet.window import key
 
 
 class GameScene(Scene):

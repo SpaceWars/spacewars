@@ -109,7 +109,7 @@ def play(name):
     if not SOUND:
         return
     load(name)
-    a = sounds[name].play().volume = sound_vol
+    sounds[name].play().volume = sound_vol
 
 
 def sound_volume(vol):
