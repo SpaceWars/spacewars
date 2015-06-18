@@ -21,6 +21,8 @@ from pyglet.gl import glPushMatrix, glPopMatrix
 
 class BackgroundLayer(Layer):
 
+    """ A simple layer with a image background. """
+
     def __init__(self, background):
         super(BackgroundLayer, self).__init__()
         self.image = resource.image(background)
