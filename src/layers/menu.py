@@ -21,44 +21,8 @@ from cocos.menu import (Menu, MultipleMenuItem, MenuItem, ToggleMenuItem,
 from cocos.scenes.transitions import FadeBLTransition
 from cocos.text import Label
 from configs import FONT
-from engine.event import EventHandle
+from engine.event import EventHandle, JoypadMenuSuport
 from game.scenes import GameScene
-
-
-class JoypadMenuSuport(object):
-
-    """docstring for JoypadMenuSuport"""
-
-    def on_joyaxis_motion(self, joystick, axis, value):
-        if (axis is 'x') or (axis is 'hat_x'):
-            return
-        if (abs(value) > 0.1):
-            print axis, value
-        if axis is 'hat_y':
-            value *= -1
-        idx = self.selected_index
-        if (value > 0.4):
-            idx += 1
-        if (value < -0.4):
-            idx -= 1
-        if idx < 0:
-            idx = len(self.children) - 1
-        elif idx > len(self.children) - 1:
-            idx = 0
-        self._select_item(idx)
-
-    def on_joybutton_press(self, joystick, button):
-        try:
-            print EventHandle()[button]
-            EventHandle().joystick.on_joyaxis_motion = EventHandle().void
-            EventHandle().joystick.on_joybutton_press = EventHandle().void
-            if EventHandle()[button] is 'B':
-                director.pop()
-            else:
-                self._activate_item()
-        except Exception:
-            pass
-        # return True
 
 
 class MainMenu(Menu, JoypadMenuSuport):
