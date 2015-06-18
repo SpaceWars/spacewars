@@ -25,6 +25,8 @@ from pyglet import resource
 
 class SpaceShipSprite(Sprite):
 
+    """ Apresentation layer to Spaceship """
+
     def __init__(self):
         image = 'sprites/spaceship/center.png'
         super(SpaceShipSprite, self).__init__(image)
@@ -38,22 +40,31 @@ class SpaceShipSprite(Sprite):
         self.bullets = []
 
     def move_left(self):
+        """ Change image of sprite when the spaceship moves to the left """
+
         self.image = resource.image('data/sprites/spaceship/left4.png')
 
     def move_right(self):
+        """ Change image of sprite when the spaceship moves to the right """
+
         self.image = resource.image('data/sprites/spaceship/right4.png')
 
     def center_spaceship(self):
+        """ Change image of sprite when the spaceship back to the
+        center position """
+
         self.image = resource.image('data/sprites/spaceship/center.png')
 
     @classmethod
     def get_position(cls):
+        """ Return the position of the sprite """
+
         return cls.position
 
 
 class Enemy(Sprite):
 
-    """docstring for Enemy"""
+    """ Gereneric representation for spaceship enemies. """
 
     def __init__(self, arg):
         super(Enemy, self).__init__(arg)
@@ -61,6 +72,8 @@ class Enemy(Sprite):
 
 
 class AeroliteSprite(Enemy):
+
+    """ Apresentation layer to Aerolite """
 
     def __init__(self, width=WIDTH / 2, height=2 * HEIGHT):
         image = 'sprites/aerolite/aero1.png'
@@ -74,6 +87,8 @@ class AeroliteSprite(Enemy):
 
 class RohenianSprite(Enemy):
 
+    """ Apresentation layer to Rohenian """
+
     def __init__(self):
         image = "sprites/rohenians/F5S1.png"
         super(RohenianSprite, self).__init__(image)
@@ -85,7 +100,7 @@ class RohenianSprite(Enemy):
 
 class Bullet(Sprite):
 
-    """docstring for Bullet"""
+    """ Gereneric representation for spaceship and rohenians bullets. """
 
     dmg = 0.0
     sprite_move_action = None
@@ -96,6 +111,8 @@ class Bullet(Sprite):
         self.dmg = dmg
 
     def info(self):
+        """ Return some informations from the current bullet. """
+
         info = "Dmg: %f\nFather: %s\nPosition: %s" % (self.dmg,
                                                       self.father,
                                                       self.position)
@@ -104,7 +121,7 @@ class Bullet(Sprite):
 
 class SpaceShipBullet(Bullet):
 
-    """docstring for Bullet"""
+    """ Apresentation layer to the Spaceship bullet """
 
     def __init__(self, father=None, dmg=10):
         self.imagem = "sprites/spaceship/fire.png"
@@ -114,7 +131,7 @@ class SpaceShipBullet(Bullet):
 
 class RoheniansBullet(Bullet):
 
-    """docstring for Bullet"""
+    """ Apresentation layer to the Rohenian bullet """
 
     def __init__(self, dmg=1):
         self.imagem = "sprites/rohenians/fire.png"
