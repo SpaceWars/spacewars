@@ -18,13 +18,13 @@
 	- python-cocos2d (<=0.6.0)
 	- python-pyglet (<=1.2.2)
 	- python-six (<=1.9.0)
-- For those who have the *pip* installed on their computers can install the dependencies by running the following command in the game's root:
+- Those who have the *pip* installed on their computers can install the dependencies by running the following command in the game's root:
 
 >	# pip install -r requeriments
 
 ## Running **SpaceWars** in your computer
 
-With the dependencies installed, simply run the **SpaceWars** file located in the root directory where the game was unpacked. For those who wish that the game can run from a launcher or any directory from a terminal, simply generate a symbolic link to the executable folder */usr/bin* or the *~/bin*. Having the full address of the executable as *~/Downloads/SpaceWars/SpaceWars* for example, the following command will create the desirable symbolic link:
+With the dependencies installed, simply run the **SpaceWars** file located in the root directory where the game was unpacked. For those who wish the game to run from a launcher or any directory from a terminal, simply generate a symbolic link to the executable folder */usr/bin* or the *~/bin*. Having the full address of the executable as *~/Downloads/SpaceWars/SpaceWars* for example, the following command will create the desirable symbolic link:
 
 >	# ln -s ~/Downloads/SpaceWars/SpaceWars /usr/bin/SpaceWars
 
@@ -52,4 +52,4 @@ With the dependencies installed, simply run the **SpaceWars** file located in th
 - Directionals
 	- Control the ship and navigation menus.
 - Buttons
-	- Soot.
+	- Shoot.
