@@ -15,6 +15,7 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 """
 from itertools import cycle
+import cocos.collision_model as collision
 import random
 
 from cocos.actions import MoveTo
@@ -38,7 +39,50 @@ class GameScene(Scene):
         self.aerolites = EnemyFactory.create_enemy("Aerolite", 5)
         self.rohenians = EnemyFactory.create_enemy("Rohenian", 10)
         self.__recharge()
+
+        self.collision_manager = collision.CollisionManagerBruteForce()
+        self.__collision_manager_add()
+
+        self.schedule(self.check_collisions)
+
         clock.schedule_interval(self.__set_direction, .8)
+
+    def check_collisions(self, dt):
+        # print self.collision_manager.known_objs()
+        collisions = self.collision_manager.objs_colliding(self.spaceship)
+        if collisions:
+            # print "COLIDIU PORRAAAA"
+            for rohenian in self.rohenians:
+                if rohenian in collisions:
+                    print "COLIDIU COM UM ROHINIANO!!!"
+                    print rohenian
+
+            for aerolite in self.aerolites:
+                if aerolite in collisions:
+                    print "COLIDIU COM UM AEROLITOOO!!!"
+                    print aerolite
+
+    def new_game(self):
+        """ Create a new game scene, and add some elements in scene, like the
+        rohenians, aerolites and spaceship. """
+
+        self.add(self.background, z=0)
+        self.add(self.spaceship, z=2)
+
+        for aero in self.aerolites:
+            # Set a randomic  initial position to aerolites
+            width = random.randint(0, WIDTH)
+            aero.do(MoveTo((width, -aero.image.height), random.randint(7, 15)))
+            self.add(aero, z=2)
+
+        for rohenian in self.rohenians:
+            # Set a randomic  initial position to rohinians
+            width = random.randint(-WIDTH, 2 * WIDTH)
+            rohenian.do(
+                MoveTo((width, -rohenian.image.height), random.randint(5, 8)))
+            self.add(rohenian, z=2)
+
+        return self
 
     def __recharge(self):
         """ Recharge the spaceship weapon, requesting new bullets to the
@@ -48,28 +92,6 @@ class GameScene(Scene):
         bullets = FireFactory().delivery_bullets(
             'hero', 90, target=self.spaceship)
         self.spaceship.bullets = cycle(bullets)
-
-    def new_game(self):
-        """ Create a new game scene, and add some elements in scene, like the
-        rohenians, aerolites and spaceship. """
-
-        self.add(self.background, z=0)
-        self.add(self.spaceship)
-
-        for aero in self.aerolites:
-            # Set a randomic  initial position to aerolites
-            width = random.randint(0, WIDTH)
-            aero.do(MoveTo((width, -aero.image.height), random.randint(7, 15)))
-            self.add(aero)
-
-        for rohenian in self.rohenians:
-            # Set a randomic  initial position to rohinians
-            width = random.randint(-WIDTH, 2 * WIDTH)
-            rohenian.do(
-                MoveTo((width, -rohenian.image.height), random.randint(5, 8)))
-            self.add(rohenian)
-
-        return self
 
     def __set_direction(self, *args):
         """ To difficult the game, the rohinians change their directions
@@ -81,3 +103,14 @@ class GameScene(Scene):
             width = random.randint(-WIDTH, WIDTH)
             rohenian.do(
                 MoveTo((width, -rohenian.image.height), random.randint(5, 8)))
+
+    def __collision_manager_add(self):
+        """ Add sprites into collision manager to listen to collisions """
+
+        self.collision_manager.add(self.spaceship)
+
+        for rohenian in self.rohenians:
+            self.collision_manager.add(rohenian)
+
+        for aerolite in self.aerolites:
+            self.collision_manager.add(aerolite)
