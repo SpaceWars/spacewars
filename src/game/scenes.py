@@ -131,7 +131,7 @@ class GameScene(Scene):
         FireFactory.create_bullets('hero', qnt=2000)
         bullets = FireFactory().delivery_bullets(
             'hero', 2000, target=self.spaceship)
-        self.spaceship.bullets.appent(bullets)
+        self.spaceship.bullets += bullets
 
     def __collision_manager_add(self):
         """ Add sprites into collision manager to listen to collisions """
