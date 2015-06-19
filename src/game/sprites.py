@@ -126,7 +126,7 @@ class Bullet(Sprite):
         self.dmg = dmg
         self.cshape = collision.AARectShape(self.position,
                                             self.width * self.scale / 2,
-                                            self.height * self.scale / 2)
+                                            self.height * 2)
 
     def info(self):
         """ Return some informations from the current bullet. """

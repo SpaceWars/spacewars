@@ -83,8 +83,13 @@ class SpaceshipAction(actions.Move):
     def __set_bullet_time(self):
         bullet_time = self.target.bullets.next()
         bullet_time.stop()
-        bullet_time.sprite_move_action = actions.MoveTo(
-            (self.target.position[0], HEIGHT * 1.1), 2)
+        try:
+            if bullet_time.sprite_move_action.done():
+                bullet_time.sprite_move_action = actions.MoveTo(
+                    (self.target.position[0], HEIGHT * 1.1), 5)
+        except Exception:
+            bullet_time.sprite_move_action = actions.MoveTo(
+                (self.target.position[0], HEIGHT * 1.1), 5)
         bullet_time.position = self.target.position
         try:
             self.target.parent.remove(bullet_time)
