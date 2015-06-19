@@ -76,13 +76,14 @@ class JoypadMenuSuport(object):
         if (axis is 'x') or (axis is 'hat_x'):
             return
         if (abs(value) > 0.1):
-            print axis, value
+            # print axis, value
+            pass
         if axis is 'hat_y':
             value *= -1
         idx = self.selected_index
-        if (value > 0.4):
+        if (value == 1):
             idx += 1
-        if (value < -0.4):
+        if (value == -1):
             idx -= 1
         if idx < 0:
             idx = len(self.children) - 1
@@ -94,11 +95,12 @@ class JoypadMenuSuport(object):
         if len(director.scene_stack) != 0:
             return
         try:
-            print EventHandle()[button]
+            # print EventHandle()[button]
             EventHandle().joystick.on_joyaxis_motion = EventHandle().void
             EventHandle().joystick.on_joybutton_press = EventHandle().void
             if EventHandle()[button] is 'B':
-                director.pop()
+                # director.pop()
+                self.parent.switch_to(0)
             else:
                 self._activate_item()
         except Exception:

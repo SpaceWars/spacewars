@@ -22,6 +22,7 @@ from engine.event import EventHandle
 from pyglet import resource
 from pyglet.window import key
 from cocos.director import director
+from layers.menu import OptionsMenu, Credits
 
 
 class SpaceshipAction(actions.Move):
@@ -46,6 +47,8 @@ class SpaceshipAction(actions.Move):
 
         if keyboard[key.SPACE]:
             self.__set_bullet_time()
+        elif keyboard[key.ENTER]:
+            print "Show Options"
 
         if joystick is not None:
             self.__set_velocity_with_joystick(joystick)
@@ -53,10 +56,10 @@ class SpaceshipAction(actions.Move):
             if EventHandle()['Home'] is True:
                 director.pop()
             elif EventHandle()['Start'] is True:
-                pass
+                print "Show Options"
             elif EventHandle()['Select'] is True:
                 pass
-            elif (True in joystick.buttons) or (joystick.z != -1):
+            elif (True in joystick.buttons) or (joystick.rz != -1):
                 self.__set_bullet_time()
 
         self.__set_movement_image()
@@ -73,7 +76,7 @@ class SpaceshipAction(actions.Move):
     def __set_velocity_with_joystick(self, joystick):
         """ Determine velocity based on joystick inputs """
 
-        self.speed = ((joystick.rz + 1) * 80) + self.speed
+        self.speed = ((joystick.z + 1) * 80) + self.speed
         if (abs(joystick.rx) > self.error) \
            or (abs(joystick.ry) > self.error):
             self.target.velocity = (

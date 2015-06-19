@@ -46,6 +46,7 @@ class GameScene(Scene):
         self.schedule(self.check_collisions)
 
         clock.schedule_interval(self.__set_direction, .8)
+        self.new_game()
 
     def check_collisions(self, dt):
         # print self.collision_manager.known_objs()

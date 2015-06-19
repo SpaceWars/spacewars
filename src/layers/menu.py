@@ -22,7 +22,6 @@ from cocos.scenes.transitions import FadeBLTransition
 from cocos.text import Label
 from configs import FONT
 from engine.event import EventHandle, JoypadMenuSuport
-from game.scenes import GameScene
 
 
 class MainMenu(Menu, JoypadMenuSuport):
@@ -89,10 +88,11 @@ class MainMenu(Menu, JoypadMenuSuport):
 
     def new_game(self):
         print "New game selected"
-        game_scene = GameScene()
-        # self.on_joybutton_press = EventHandle().void
-        game_scene.parent = self.parent.parent
-        director.push(FadeBLTransition(game_scene.new_game(), 1.5))
+        from game.scenes import GameScene
+
+        self.game_scene = GameScene()
+        self.game_scene.parent = self.parent
+        director.push(FadeBLTransition(self.game_scene, 1.5))
 
     def credits(self):
         print "Show me the credits!"
