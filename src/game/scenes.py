@@ -26,6 +26,7 @@ from engine.gunfire import FireFactory
 from game.sprites import SpaceShipSprite
 from layers.base_layers import BackgroundLayer
 from pyglet import clock
+from cocos.director import director
 
 
 class GameScene(Scene):
@@ -46,22 +47,23 @@ class GameScene(Scene):
         self.schedule(self.check_collisions)
 
         clock.schedule_interval(self.__set_direction, .8)
+        clock.schedule_interval(self.__check_buttons, .2)
         self.new_game()
 
     def check_collisions(self, dt):
         # print self.collision_manager.known_objs()
         collisions = self.collision_manager.objs_colliding(self.spaceship)
-        # if collisions:
-        # print "COLIDIU PORRAAAA"
-        #     for rohenian in self.rohenians:
-        #         if rohenian in collisions:
-        #             print "COLIDIU COM UM ROHINIANO!!!"
-        #             print rohenian
+        if collisions:
+        print "COLIDIU PORRAAAA"
+            for rohenian in self.rohenians:
+                if rohenian in collisions:
+                    print "COLIDIU COM UM ROHINIANO!!!"
+                    print rohenian
 
-        #     for aerolite in self.aerolites:
-        #         if aerolite in collisions:
-        #             print "COLIDIU COM UM AEROLITOOO!!!"
-        #             print aerolite
+            for aerolite in self.aerolites:
+                if aerolite in collisions:
+                    print "COLIDIU COM UM AEROLITOOO!!!"
+                    print aerolite
 
     def new_game(self):
         """ Create a new game scene, and add some elements in scene, like the
@@ -84,6 +86,39 @@ class GameScene(Scene):
             self.add(rohenian, z=2)
 
         return self
+
+    def __check_buttons(self, *args):
+        from engine.event import EventHandle
+        from pyglet.window import key
+
+        joystick = EventHandle().joystick
+        keyboard = EventHandle().keyboard
+        if joystick is not None:
+            if EventHandle()['Select'] is True:
+                director.show_FPS = not director.show_FPS
+                print director.show_FPS
+            elif EventHandle()['Start'] is True:
+                print "Show Options"
+            elif (True in joystick.buttons) or (joystick.rz != -1):
+                self.__set_bullet_time()
+
+        if keyboard[key.SPACE]:
+            self.__set_bullet_time()
+        elif keyboard[key.ENTER]:
+            print "Show Options"
+
+    def __set_bullet_time(self):
+        bullet_time = self.spaceship.bullets.next()
+        bullet_time.stop()
+        bullet_time.sprite_move_action = MoveTo(
+            (self.spaceship.position[0], HEIGHT * 1.1), 2)
+        bullet_time.position = self.spaceship.position
+        try:
+            self.spaceship.parent.remove(bullet_time)
+        except Exception:
+            pass
+        self.spaceship.parent.add(bullet_time)
+        bullet_time.do(bullet_time.sprite_move_action)
 
     def __recharge(self):
         """ Recharge the spaceship weapon, requesting new bullets to the
