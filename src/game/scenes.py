@@ -48,6 +48,13 @@ class GameScene(Scene):
         self.schedule(self.check_collisions)
 
         clock.schedule_interval(self.__check_buttons, .15)
+
+        self.show_bullets_string()
+        self.show_hp_string()
+
+        self.new_game()
+
+    def show_bullets_string(self):
         self.bullets_string = text.Label(
             '',
             font_name=FONT['body'],
@@ -58,9 +65,25 @@ class GameScene(Scene):
         )
         self.bullets_string.element.text = "Bullets: %04d" % len(
             self.spaceship.bullets)
-        self.new_game()
+
+    def show_hp_string(self):
+        self.hp_string = text.Label(
+            '',
+            font_name=FONT['body'],
+            font_size=16,
+            anchor_x='center', anchor_y='center',
+            position=(80, 40),
+            color=(225, 225, 225, 225),
+        )
+        self.hp_string.element.text = "Health: 100%"
 
     def check_collisions(self, dt):
+        if self.spaceship.health < 0:
+            director.pop()
+        else:
+            health = self.spaceship.health / 5
+            self.hp_string.element.text = "Health: " + str(health * 100) + "%"
+
         collisions = self.collision_manager.objs_colliding(self.spaceship)
         if collisions:
             self.__spaceship_rohinian_collision(collisions)
@@ -83,6 +106,7 @@ class GameScene(Scene):
         self.add(self.background, z=0)
         self.add(self.spaceship, z=3)
         self.add(self.bullets_string, z=4)
+        self.add(self.hp_string, z=4)
 
         for aero in self.aerolites:
             # Set a randomic  initial position to aerolites

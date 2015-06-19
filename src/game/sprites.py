@@ -60,7 +60,7 @@ class SpaceShipSprite(Sprite):
         self.image = resource.image('data/sprites/spaceship/center.png')
 
     def crash(self):
-        self.health = self.health - 1
+        self.health = self.health - 0.02
         self.do(Blink(10, 1) + Show())
 
     @classmethod
