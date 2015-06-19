@@ -120,6 +120,10 @@ class SpaceshipAction(actions.Move):
         elif self.target.position[1] > 150:
             self.target.position = (self.target.position[0], 150)
 
+        for i in self.target.bullets_used:
+            if i.position[1] > HEIGHT:
+                self.target.bullets_used.remove(i)
+
 
 class AeroliteAction(actions.Move):
 
@@ -146,7 +150,7 @@ class RohinianAction(actions.Move):
         if self.target.position[1] < 0:
             self.target.position = (random.randint(0, WIDTH), HEIGHT)
             self.target.do(MoveTo((random.randint(0, WIDTH),
-                                  - self.target.height),
+                                   - self.target.height),
                                   random.randint(4, 8)))
         self.target.cshape.center = self.target.position
 
