@@ -16,6 +16,7 @@ GNU General Public License for more details.
 """
 import random
 
+from cocos.actions import Blink, Show
 from cocos.sprite import Sprite
 from configs import WIDTH, HEIGHT
 from engine.action import AeroliteAction, SpaceshipAction, RohinianAction
@@ -31,6 +32,7 @@ class SpaceShipSprite(Sprite):
         image = 'sprites/spaceship/center.png'
         super(SpaceShipSprite, self).__init__(image)
 
+        self.health = 5
         self.position = (WIDTH / 2, - self.image.height)
         self.scale = 0.25
         self.velocity = (0, 0)
@@ -56,6 +58,10 @@ class SpaceShipSprite(Sprite):
         center position """
 
         self.image = resource.image('data/sprites/spaceship/center.png')
+
+    def crash(self):
+        self.health = self.health - 1
+        self.do(Blink(10, 1) + Show())
 
     @classmethod
     def get_position(cls):

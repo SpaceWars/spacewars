@@ -52,13 +52,18 @@ class GameScene(Scene):
     def check_collisions(self, dt):
         collisions = self.collision_manager.objs_colliding(self.spaceship)
         if collisions:
-            for rohenian in self.rohenians:
-                if rohenian in collisions:
-                    pass
+            self.__spaceship_rohinian_collision(collisions)
+            self.__spaceship_aerolite_collision(collisions)
 
-            for aerolite in self.aerolites:
-                if aerolite in collisions:
-                    pass
+    def __spaceship_rohinian_collision(self, collisions):
+        for rohenian in self.rohenians:
+            if rohenian in collisions:
+                self.spaceship.crash()
+
+    def __spaceship_aerolite_collision(self, collisions):
+        for aerolite in self.aerolites:
+            if aerolite in collisions:
+                self.spaceship.crash()
 
     def new_game(self):
         """ Create a new game scene, and add some elements in scene, like the
@@ -112,7 +117,7 @@ class GameScene(Scene):
             self.remove(bullet_time)
         except Exception:
             pass
-        self.spaceship.parent.add(bullet_time)
+        self.add(bullet_time)
         bullet_time.do(bullet_time.sprite_move_action)
 
     def __recharge(self):
