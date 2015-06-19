@@ -117,8 +117,8 @@ class SpaceshipAction(actions.Move):
         if self.target.position[1] < self.target.width / 2:
             self.target.position = (
                 self.target.position[0], self.target.width / 2)
-        elif self.target.position[1] > 150:
-            self.target.position = (self.target.position[0], 150)
+        elif self.target.position[1] > 200:
+            self.target.position = (self.target.position[0], 200)
 
         for i in self.target.bullets_used:
             if i.position[1] > HEIGHT:

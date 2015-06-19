@@ -81,8 +81,8 @@ class GameScene(Scene):
         rohenians, aerolites and spaceship. """
 
         self.add(self.background, z=0)
-        self.add(self.spaceship, z=2)
-        self.add(self.bullets_string, z=3)
+        self.add(self.spaceship, z=3)
+        self.add(self.bullets_string, z=4)
 
         for aero in self.aerolites:
             # Set a randomic  initial position to aerolites
@@ -135,7 +135,7 @@ class GameScene(Scene):
             self.remove(bullet_time)
         except Exception:
             pass
-        self.add(bullet_time)
+        self.add(bullet_time, z=2)
         bullet_time.do(bullet_time.sprite_move_action)
         self.bullets_string.element.text = "Bullets: %04d" % len(
             self.spaceship.bullets)
