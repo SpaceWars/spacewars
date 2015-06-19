@@ -44,7 +44,23 @@ class EventHandle(object):
             9: 'L3',
             10: 'R3',
         }
-        return joypad_buttons[key]
+        try:
+            return joypad_buttons[key]
+        except KeyError:
+            joypad_buttons = {
+                'A': 0,
+                'B': 1,
+                'X': 2,
+                'Y': 3,
+                'LB': 4,
+                'RB': 5,
+                'Select': 6,
+                'Start': 7,
+                'Home': 8,
+                'L3': 9,
+                'R3': 10,
+            }
+            return self.joystick.buttons[joypad_buttons[key]]
 
     def void(self, *kargs):
         pass
@@ -55,6 +71,8 @@ class JoypadMenuSuport(object):
     """ Adds support for Xbox One joystick """
 
     def on_joyaxis_motion(self, joystick, axis, value):
+        if len(director.scene_stack) != 0:
+            return
         if (axis is 'x') or (axis is 'hat_x'):
             return
         if (abs(value) > 0.1):
@@ -73,6 +91,8 @@ class JoypadMenuSuport(object):
         self._select_item(idx)
 
     def on_joybutton_press(self, joystick, button):
+        if len(director.scene_stack) != 0:
+            return
         try:
             print EventHandle()[button]
             EventHandle().joystick.on_joyaxis_motion = EventHandle().void

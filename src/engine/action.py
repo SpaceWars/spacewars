@@ -21,6 +21,7 @@ from configs import WIDTH, HEIGHT
 from engine.event import EventHandle
 from pyglet import resource
 from pyglet.window import key
+from cocos.director import director
 
 
 class SpaceshipAction(actions.Move):
@@ -49,8 +50,13 @@ class SpaceshipAction(actions.Move):
         if joystick is not None:
             self.__set_velocity_with_joystick(joystick)
 
-            if (True in joystick.buttons) or (joystick.z != -1) or \
-               (joystick.rz != -1):
+            if EventHandle()['Home'] is True:
+                director.pop()
+            elif EventHandle()['Start'] is True:
+                pass
+            elif EventHandle()['Select'] is True:
+                pass
+            elif (True in joystick.buttons) or (joystick.z != -1):
                 self.__set_bullet_time()
 
         self.__set_movement_image()

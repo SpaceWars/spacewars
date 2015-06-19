@@ -50,17 +50,17 @@ class GameScene(Scene):
     def check_collisions(self, dt):
         # print self.collision_manager.known_objs()
         collisions = self.collision_manager.objs_colliding(self.spaceship)
-        if collisions:
-            # print "COLIDIU PORRAAAA"
-            for rohenian in self.rohenians:
-                if rohenian in collisions:
-                    print "COLIDIU COM UM ROHINIANO!!!"
-                    print rohenian
+        # if collisions:
+        # print "COLIDIU PORRAAAA"
+        #     for rohenian in self.rohenians:
+        #         if rohenian in collisions:
+        #             print "COLIDIU COM UM ROHINIANO!!!"
+        #             print rohenian
 
-            for aerolite in self.aerolites:
-                if aerolite in collisions:
-                    print "COLIDIU COM UM AEROLITOOO!!!"
-                    print aerolite
+        #     for aerolite in self.aerolites:
+        #         if aerolite in collisions:
+        #             print "COLIDIU COM UM AEROLITOOO!!!"
+        #             print aerolite
 
     def new_game(self):
         """ Create a new game scene, and add some elements in scene, like the

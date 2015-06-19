@@ -90,7 +90,7 @@ class MainMenu(Menu, JoypadMenuSuport):
     def new_game(self):
         print "New game selected"
         game_scene = GameScene()
-        self.on_joybutton_press = EventHandle().void
+        # self.on_joybutton_press = EventHandle().void
         game_scene.parent = self.parent.parent
         director.push(FadeBLTransition(game_scene.new_game(), 1.5))
 
