@@ -19,7 +19,8 @@ import random
 
 from cocos.actions import MoveTo
 from cocos.scene import Scene
-from configs import WIDTH, HEIGHT
+from configs import WIDTH
+from engine.action import FireAction
 from engine.enemy import EnemyFactory
 from engine.gunfire import FireFactory
 from game.sprites import SpaceShipSprite
@@ -84,10 +85,40 @@ class GameScene(Scene):
             health = self.spaceship.health / 5
             self.hp_string.element.text = "Health: " + str(health * 100) + "%"
 
-        collisions = self.collision_manager.objs_colliding(self.spaceship)
-        if collisions:
-            self.__spaceship_rohinian_collision(collisions)
-            self.__spaceship_aerolite_collision(collisions)
+        ship_collisions = self.collision_manager.objs_colliding(self.spaceship)
+        if ship_collisions:
+            self.__spaceship_rohinian_collision(ship_collisions)
+            self.__spaceship_aerolite_collision(ship_collisions)
+
+        self.__bullet_collisions()
+
+    def __bullet_collisions(self):
+        for bullet in self.spaceship.bullets_used:
+            collisions = self.collision_manager.objs_colliding(bullet)
+            self.__bullet_rohinian_collision(collisions, bullet)
+            self.__bullet_aerolite_collision(collisions, bullet)
+
+    def __bullet_rohinian_collision(self, collisions, bullet):
+        for rohenian in self.rohenians:
+            if rohenian in collisions:
+                try:
+                    self.remove(rohenian)
+                    del rohenian
+                    self.remove(bullet)
+                    del bullet
+                except:
+                    pass
+
+    def __bullet_aerolite_collision(self, collisions, bullet):
+        for aerolite in self.aerolites:
+            if aerolite in collisions:
+                try:
+                    self.remove(aerolite)
+                    del aerolite
+                    self.remove(bullet)
+                    del bullet
+                except:
+                    pass
 
     def __spaceship_rohinian_collision(self, collisions):
         for rohenian in self.rohenians:
@@ -152,15 +183,13 @@ class GameScene(Scene):
             bullet_time = self.spaceship.bullets.pop()
         self.spaceship.bullets_used.append(bullet_time)
         bullet_time.stop()
-        bullet_time.sprite_move_action = MoveTo(
-            (self.spaceship.position[0], HEIGHT * 1.1), 2)
         bullet_time.position = self.spaceship.position
         try:
             self.remove(bullet_time)
         except Exception:
             pass
         self.add(bullet_time, z=2)
-        bullet_time.do(bullet_time.sprite_move_action)
+        bullet_time.do(FireAction())
         self.bullets_string.element.text = "Bullets: %04d" % len(
             self.spaceship.bullets)
 
@@ -182,3 +211,6 @@ class GameScene(Scene):
 
         for aerolite in self.aerolites:
             self.collision_manager.add(aerolite)
+
+        for bullet in self.spaceship.bullets:
+            self.collision_manager.add(bullet)

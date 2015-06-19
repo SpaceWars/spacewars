@@ -163,5 +163,5 @@ class FireAction(actions.Move):
     def step(self, dt):
         super(FireAction, self).step(dt)
 
-        velocity_x, velocity_y = self.target.velocity
+        self.target.do(MoveTo((self.target.position[0], HEIGHT * 1.1), 2))
         self.target.cshape.center = self.target.position
