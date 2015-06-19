@@ -16,11 +16,11 @@ GNU General Public License for more details.
 """
 import random
 
-from cocos.actions import MoveTo
 from cocos.sprite import Sprite
 from configs import WIDTH, HEIGHT
 from engine.action import AeroliteAction, SpaceshipAction
 from pyglet import resource
+import cocos.collision_model as collision
 
 
 class SpaceShipSprite(Sprite):
@@ -34,10 +34,12 @@ class SpaceShipSprite(Sprite):
         self.position = (WIDTH / 2, - self.image.height)
         self.scale = 0.25
         self.velocity = (0, 0)
-        self.do(MoveTo((WIDTH / 2, 100), 2))
         self.do(SpaceshipAction())
         self.bullets_used = []
         self.bullets = []
+        self.rectshape = collision.AARectShape(self.get_rect().center,
+                                               self.width / 2,
+                                               self.height / 2)
 
     def move_left(self):
         """ Change image of sprite when the spaceship moves to the left """
@@ -69,6 +71,9 @@ class Enemy(Sprite):
     def __init__(self, arg):
         super(Enemy, self).__init__(arg)
         self.velocity = (0, 0)
+        self.rectshape = collision.AARectShape(self.get_rect().center,
+                                               self.width / 2,
+                                               self.height / 2)
 
 
 class AeroliteSprite(Enemy):
@@ -109,6 +114,9 @@ class Bullet(Sprite):
         super(Bullet, self).__init__(image)
         self.scale = 0.25
         self.dmg = dmg
+        self.rectshape = collision.AARectShape(self.get_rect().center,
+                                               self.width / 2,
+                                               self.height / 2)
 
     def info(self):
         """ Return some informations from the current bullet. """

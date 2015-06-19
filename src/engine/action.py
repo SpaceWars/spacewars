@@ -21,6 +21,7 @@ from configs import WIDTH, HEIGHT
 from engine.event import EventHandle
 from pyglet import resource
 from pyglet.window import key
+import cocos.collision_model as collision
 
 
 class SpaceshipAction(actions.Move):
@@ -55,6 +56,7 @@ class SpaceshipAction(actions.Move):
 
         self.__set_movement_image()
         self.__bound_limits()
+        self.__update_collision_rect()
 
     def __set_velocity_with_keyboard(self, keyboard):
         """ Determine velocity based on keyboard inputs. """
@@ -120,6 +122,12 @@ class SpaceshipAction(actions.Move):
         elif self.target.position[1] > 150:
             self.target.position = (self.target.position[0], 150)
 
+    def __update_collision_rect(self):
+        self.target.rectshape = collision.AARectShape(
+            self.target.get_rect().center,
+            self.target.width / 2,
+            self.target.height / 2)
+
 
 class AeroliteAction(actions.Move):
 
@@ -134,6 +142,13 @@ class AeroliteAction(actions.Move):
         if self.target.position[1] < -self.target.image.height:
             self.target.position = (
                 random.randint(0, WIDTH), HEIGHT + self.target.image.height)
+        self.__update_collision_rect()
+
+    def __update_collision_rect(self):
+        self.target.rectshape = collision.AARectShape(
+            self.target.get_rect().center,
+            self.target.width / 2,
+            self.target.height / 2)
 
 
 class FireAction(actions.Move):
@@ -144,4 +159,11 @@ class FireAction(actions.Move):
         super(FireAction, self).step(dt)
 
         velocity_x, velocity_y = self.target.velocity
-        print velocity_x, velocity_y
+        self.__update_collision_rect()
+        print self.target.rectshape.minmax()
+
+    def __update_collision_rect(self):
+        self.target.rectshape = collision.AARectShape(
+            self.target.get_rect().center,
+            self.target.width / 2,
+            self.target.height / 2)
