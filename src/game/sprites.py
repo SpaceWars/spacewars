@@ -18,7 +18,7 @@ import random
 
 from cocos.sprite import Sprite
 from configs import WIDTH, HEIGHT
-from engine.action import AeroliteAction, SpaceshipAction
+from engine.action import AeroliteAction, SpaceshipAction, RohinianAction
 from pyglet import resource
 import cocos.collision_model as collision
 
@@ -37,7 +37,7 @@ class SpaceShipSprite(Sprite):
         self.do(SpaceshipAction())
         self.bullets_used = []
         self.bullets = []
-        self.cshape = collision.AARectShape(self.get_rect().center,
+        self.cshape = collision.AARectShape(self.position,
                                             self.width / 2,
                                             self.height / 2)
 
@@ -71,9 +71,6 @@ class Enemy(Sprite):
     def __init__(self, arg):
         super(Enemy, self).__init__(arg)
         self.velocity = (0, 0)
-        self.cshape = collision.AARectShape(self.get_rect().center,
-                                            self.width / 2,
-                                            self.height / 2)
 
 
 class AeroliteSprite(Enemy):
@@ -87,6 +84,9 @@ class AeroliteSprite(Enemy):
         width = random.randint(0, WIDTH)
         self.scale = 0.15
         self.position = (width, HEIGHT + HEIGHT / 8)
+        self.cshape = collision.AARectShape(self.position,
+                                            self.width * self.scale / 2,
+                                            self.height * self.scale / 2)
         self.do(AeroliteAction())
 
 
@@ -101,6 +101,10 @@ class RohenianSprite(Enemy):
         width = random.randint(0, WIDTH)
         self.position = (width, HEIGHT)
         self.scale = 0.30
+        self.cshape = collision.AARectShape(self.position,
+                                            self.width * self.scale / 2,
+                                            self.height * self.scale / 2)
+        self.do(RohinianAction())
 
 
 class Bullet(Sprite):
@@ -114,7 +118,7 @@ class Bullet(Sprite):
         super(Bullet, self).__init__(image)
         self.scale = 0.25
         self.dmg = dmg
-        self.cshape = collision.AARectShape(self.get_rect().center,
+        self.cshape = collision.AARectShape(self.position,
                                             self.width / 2,
                                             self.height / 2)
 

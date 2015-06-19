@@ -37,7 +37,7 @@ class GameScene(Scene):
         self.spaceship = SpaceShipSprite()
         EnemyFactory.populate_enemy("Aerolite", qnt=15)
         EnemyFactory.populate_enemy("Rohenian", qnt=15)
-        self.aerolites = EnemyFactory.create_enemy("Aerolite", 5)
+        self.aerolites = EnemyFactory.create_enemy("Aerolite", 6)
         self.rohenians = EnemyFactory.create_enemy("Rohenian", 10)
         self.__recharge()
 
@@ -46,24 +46,19 @@ class GameScene(Scene):
 
         self.schedule(self.check_collisions)
 
-        clock.schedule_interval(self.__set_direction, .8)
         clock.schedule_interval(self.__check_buttons, .2)
         self.new_game()
 
     def check_collisions(self, dt):
-        # print self.collision_manager.known_objs()
         collisions = self.collision_manager.objs_colliding(self.spaceship)
         if collisions:
-        print "COLIDIU PORRAAAA"
             for rohenian in self.rohenians:
                 if rohenian in collisions:
-                    print "COLIDIU COM UM ROHINIANO!!!"
-                    print rohenian
+                    pass
 
             for aerolite in self.aerolites:
                 if aerolite in collisions:
-                    print "COLIDIU COM UM AEROLITOOO!!!"
-                    print aerolite
+                    pass
 
     def new_game(self):
         """ Create a new game scene, and add some elements in scene, like the
@@ -76,14 +71,14 @@ class GameScene(Scene):
             # Set a randomic  initial position to aerolites
             width = random.randint(0, WIDTH)
             aero.do(MoveTo((width, -aero.image.height), random.randint(7, 15)))
-            self.add(aero, z=2)
+            self.add(aero, z=1)
 
         for rohenian in self.rohenians:
             # Set a randomic  initial position to rohinians
             width = random.randint(-WIDTH, 2 * WIDTH)
             rohenian.do(
                 MoveTo((width, -rohenian.image.height), random.randint(5, 8)))
-            self.add(rohenian, z=2)
+            self.add(rohenian, z=1)
 
         return self
 
@@ -128,17 +123,6 @@ class GameScene(Scene):
         bullets = FireFactory().delivery_bullets(
             'hero', 90, target=self.spaceship)
         self.spaceship.bullets = cycle(bullets)
-
-    def __set_direction(self, *args):
-        """ To difficult the game, the rohinians change their directions
-        randomly, in this method. """
-
-        for rohenian in self.rohenians:
-            if rohenian.position[1] < 0:
-                rohenian.position = (random.randint(0, WIDTH), HEIGHT)
-            width = random.randint(-WIDTH, WIDTH)
-            rohenian.do(
-                MoveTo((width, -rohenian.image.height), random.randint(5, 8)))
 
     def __collision_manager_add(self):
         """ Add sprites into collision manager to listen to collisions """

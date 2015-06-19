@@ -19,6 +19,7 @@ import random
 from cocos import actions
 from configs import WIDTH, HEIGHT
 from engine.event import EventHandle
+from cocos.actions import MoveTo
 from pyglet import resource
 from pyglet.window import key
 from cocos.director import director
@@ -133,6 +134,20 @@ class AeroliteAction(actions.Move):
         if self.target.position[1] < -self.target.image.height:
             self.target.position = (
                 random.randint(0, WIDTH), HEIGHT + self.target.image.height)
+        self.target.cshape.center = self.target.position
+
+
+class RohinianAction(actions.Move):
+
+    """ Defines the rohinian movement pattern """
+
+    def step(self, dt):
+        super(RohinianAction, self).step(dt)
+        if self.target.position[1] < 0:
+            self.target.position = (random.randint(0, WIDTH), HEIGHT)
+            self.target.do(MoveTo((random.randint(0, WIDTH),
+                                  - self.target.height),
+                                  random.randint(4, 8)))
         self.target.cshape.center = self.target.position
 
 
