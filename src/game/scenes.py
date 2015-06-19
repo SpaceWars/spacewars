@@ -26,6 +26,8 @@ from game.sprites import SpaceShipSprite
 from layers.base_layers import BackgroundLayer
 from pyglet import clock
 from cocos.director import director
+from cocos import text
+from configs import FONT
 
 
 class GameScene(Scene):
@@ -46,6 +48,16 @@ class GameScene(Scene):
         self.schedule(self.check_collisions)
 
         clock.schedule_interval(self.__check_buttons, .15)
+        self.display = text.Label(
+            '',
+            font_name=FONT['body'],
+            font_size=16,
+            anchor_x='center', anchor_y='center',
+            position=(WIDTH - 16 * 5, 40),
+            color=(225, 225, 225, 225),
+        )
+        self.display.element.text = "Bullets: %04d" % len(
+            self.spaceship.bullets)
         self.new_game()
 
     def check_collisions(self, dt):
@@ -70,6 +82,7 @@ class GameScene(Scene):
 
         self.add(self.background, z=0)
         self.add(self.spaceship, z=2)
+        self.add(self.display, z=3)
 
         for aero in self.aerolites:
             # Set a randomic  initial position to aerolites
@@ -124,6 +137,8 @@ class GameScene(Scene):
             pass
         self.add(bullet_time)
         bullet_time.do(bullet_time.sprite_move_action)
+        self.display.element.text = "Bullets: %04d" % len(
+            self.spaceship.bullets)
 
     def __recharge(self):
         """ Recharge the spaceship weapon, requesting new bullets to the
