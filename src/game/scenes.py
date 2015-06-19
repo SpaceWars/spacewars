@@ -48,7 +48,7 @@ class GameScene(Scene):
         self.schedule(self.check_collisions)
 
         clock.schedule_interval(self.__check_buttons, .15)
-        self.display = text.Label(
+        self.bullets_string = text.Label(
             '',
             font_name=FONT['body'],
             font_size=16,
@@ -56,7 +56,7 @@ class GameScene(Scene):
             position=(WIDTH - 16 * 5, 40),
             color=(225, 225, 225, 225),
         )
-        self.display.element.text = "Bullets: %04d" % len(
+        self.bullets_string.element.text = "Bullets: %04d" % len(
             self.spaceship.bullets)
         self.new_game()
 
@@ -82,7 +82,7 @@ class GameScene(Scene):
 
         self.add(self.background, z=0)
         self.add(self.spaceship, z=2)
-        self.add(self.display, z=3)
+        self.add(self.bullets_string, z=3)
 
         for aero in self.aerolites:
             # Set a randomic  initial position to aerolites
@@ -137,7 +137,7 @@ class GameScene(Scene):
             pass
         self.add(bullet_time)
         bullet_time.do(bullet_time.sprite_move_action)
-        self.display.element.text = "Bullets: %04d" % len(
+        self.bullets_string.element.text = "Bullets: %04d" % len(
             self.spaceship.bullets)
 
     def __recharge(self):
