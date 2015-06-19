@@ -14,7 +14,6 @@ but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 """
-from itertools import cycle
 import cocos.collision_model as collision
 import random
 
@@ -108,7 +107,13 @@ class GameScene(Scene):
             print "Show Options"
 
     def __set_bullet_time(self):
-        bullet_time = self.spaceship.bullets.next()
+        try:
+            bullet_time = self.spaceship.bullets.pop()
+        except IndexError:
+            return
+            # self.__recharge()
+            bullet_time = self.spaceship.bullets.pop()
+        self.spaceship.bullets_used.append(bullet_time)
         bullet_time.stop()
         bullet_time.sprite_move_action = MoveTo(
             (self.spaceship.position[0], HEIGHT * 1.1), 2)
@@ -123,11 +128,10 @@ class GameScene(Scene):
     def __recharge(self):
         """ Recharge the spaceship weapon, requesting new bullets to the
         engine.gunfire.FireFactory"""
-
-        FireFactory.create_bullets('hero', qnt=90)
+        FireFactory.create_bullets('hero', qnt=2000)
         bullets = FireFactory().delivery_bullets(
-            'hero', 90, target=self.spaceship)
-        self.spaceship.bullets = cycle(bullets)
+            'hero', 2000, target=self.spaceship)
+        self.spaceship.bullets.appent(bullets)
 
     def __collision_manager_add(self):
         """ Add sprites into collision manager to listen to collisions """
