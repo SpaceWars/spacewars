@@ -46,7 +46,7 @@ class GameScene(Scene):
 
         self.schedule(self.check_collisions)
 
-        clock.schedule_interval(self.__check_buttons, .2)
+        clock.schedule_interval(self.__check_buttons, .15)
         self.new_game()
 
     def check_collisions(self, dt):
@@ -109,7 +109,7 @@ class GameScene(Scene):
             (self.spaceship.position[0], HEIGHT * 1.1), 2)
         bullet_time.position = self.spaceship.position
         try:
-            self.spaceship.parent.remove(bullet_time)
+            self.remove(bullet_time)
         except Exception:
             pass
         self.spaceship.parent.add(bullet_time)
