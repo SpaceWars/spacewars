@@ -127,8 +127,11 @@ class SpaceshipAction(actions.Move):
 
         for i in self.target.bullets_used:
             if i.position[1] > HEIGHT:
-                self.target.parent.remove(i)
-                self.target.bullets_used.remove(i)
+                try:
+                    self.target.parent.remove(i)
+                    self.target.bullets_used.remove(i)
+                except:
+                    pass
 
 
 class AeroliteAction(actions.Move):
