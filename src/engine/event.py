@@ -23,6 +23,7 @@ class EventHandle(object):
 
     keyboard = None
     joystick = None
+    joystick_device = None
 
     def __new__(cls):
         # Singleton instance

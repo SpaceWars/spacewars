@@ -26,6 +26,30 @@ from layers.menu import MainMenu, Credits, OptionsMenu
 from pyglet import input
 from pyglet import resource, font
 from pyglet.window import key
+from pyglet import clock
+from os import listdir
+
+
+def connect_joystick(*args):
+    if EventHandle().joystick_device is not None:
+        devices = listdir('/dev/input')
+        if 'js0' not in devices:
+            print("%s disconnected " % (EventHandle().joystick_device.name))
+            input.evdev._devices = {}
+            EventHandle().joystick = None
+            EventHandle().joystick_device = None
+        return
+        if 'js1' not in devices:
+            print("Only 1 joystick is supported for now")
+    try:
+        # Check if joystick is connected
+        EventHandle().joystick = input.get_joysticks()[0]
+        EventHandle().joystick.open()
+        EventHandle().joystick.z = EventHandle().joystick.rz = -1
+        EventHandle().joystick_device = input.get_devices()[0]
+        print "%s connected" % EventHandle().joystick_device.name
+    except Exception:
+        pass
 
 
 def signal_handler(signal_received, frame):
@@ -49,13 +73,8 @@ if __name__ == "__main__":
     director.init(width=WIDTH, height=HEIGHT, caption='SpaceWars')
     director.window.push_handlers(keyboard)
 
-    try:
-        # Check if joystick is connected
-        EventHandle().joystick = input.get_joysticks()[0]
-        EventHandle().joystick.open()
-        EventHandle().joystick.z = EventHandle().joystick.rz = -1
-    except Exception, e:
-        pass
+    # observer to joystick
+    clock.schedule_interval(connect_joystick, .1)
 
     # Create a initial menu scene
     scene = Scene()
