@@ -103,6 +103,7 @@ class MainMenu(Menu, JoypadMenuSuport):
         self.parent.switch_to(2)
 
     def draw(self):
+        print director.scene_stack
         super(MainMenu, self).draw()
         try:
             EventHandle().joystick.on_joyaxis_motion = self.on_joyaxis_motion

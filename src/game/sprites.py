@@ -40,8 +40,8 @@ class SpaceShipSprite(Sprite):
         self.bullets_used = []
         self.bullets = []
         self.cshape = collision.AARectShape(self.position,
-                                            self.width / 2,
-                                            self.height / 2)
+                                            self.width * self.scale,
+                                            self.height * self.scale)
 
     def move_left(self):
         """ Change image of sprite when the spaceship moves to the left """
@@ -59,8 +59,8 @@ class SpaceShipSprite(Sprite):
 
         self.image = resource.image('data/sprites/spaceship/center.png')
 
-    def crash(self):
-        self.health = self.health - 0.02
+    def crash(self, dmg=0.02):
+        self.health -= dmg
         self.do(Blink(10, 1) + Show())
 
     @classmethod
@@ -77,6 +77,7 @@ class Enemy(Sprite):
     def __init__(self, arg):
         super(Enemy, self).__init__(arg)
         self.velocity = (0, 0)
+        self.dmg = 0.02
 
 
 class AeroliteSprite(Enemy):
@@ -89,10 +90,11 @@ class AeroliteSprite(Enemy):
 
         width = random.randint(0, WIDTH)
         self.scale = 0.15
+        self.dmg = 0.04
         self.position = (width, HEIGHT + HEIGHT / 8)
         self.cshape = collision.AARectShape(self.position,
-                                            self.width * self.scale / 2,
-                                            self.height * self.scale / 2)
+                                            self.width * self.scale * 0.5,
+                                            self.height * self.scale * 0.5)
         self.do(AeroliteAction())
 
 
@@ -108,8 +110,8 @@ class RohenianSprite(Enemy):
         self.position = (width, HEIGHT)
         self.scale = 0.30
         self.cshape = collision.AARectShape(self.position,
-                                            self.width * self.scale / 2,
-                                            self.height * self.scale / 2)
+                                            self.width * self.scale * 0.5,
+                                            self.height * self.scale * 0.5)
         self.do(RohinianAction())
 
 
@@ -125,8 +127,8 @@ class Bullet(Sprite):
         self.scale = 0.25
         self.dmg = dmg
         self.cshape = collision.AARectShape(self.position,
-                                            self.width * self.scale / 2,
-                                            self.height * 2)
+                                            self.width,
+                                            self.height)
 
     def info(self):
         """ Return some informations from the current bullet. """
@@ -144,7 +146,7 @@ class SpaceShipBullet(Bullet):
     def __init__(self, father=None, dmg=10):
         self.imagem = "sprites/spaceship/fire.png"
         super(SpaceShipBullet, self).__init__(self.imagem, dmg)
-        self.velocity = (0, 1000)
+        self.velocity = (0, 300)
 
 
 class RoheniansBullet(Bullet):

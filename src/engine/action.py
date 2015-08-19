@@ -160,7 +160,7 @@ class RohinianAction(actions.Move):
             self.target.position = (random.randint(0, WIDTH), HEIGHT)
             self.target.do(MoveTo((random.randint(0, WIDTH),
                                    - self.target.height),
-                                  random.randint(4, 8)))
+                                  random.randint(2, 6)))
         self.target.cshape.center = self.target.position
 
 
@@ -171,5 +171,5 @@ class FireAction(actions.Move):
     def step(self, dt):
         super(FireAction, self).step(dt)
 
-        self.target.do(MoveTo((self.target.position[0], HEIGHT * 1.1), 2))
+        self.target.do(MoveTo((self.target.position[0], HEIGHT * 1.01), 1))
         self.target.cshape.center = self.target.position

@@ -39,8 +39,9 @@ class GameScene(Scene):
         self.spaceship = SpaceShipSprite()
         EnemyFactory.populate_enemy("Aerolite", qnt=15)
         EnemyFactory.populate_enemy("Rohenian", qnt=15)
-        self.aerolites = EnemyFactory.create_enemy("Aerolite", 6)
-        self.rohenians = EnemyFactory.create_enemy("Rohenian", 10)
+        self.aerolites = EnemyFactory.create_enemy("Aerolite", 10)
+        self.rohenians = EnemyFactory.create_enemy("Rohenian", 5)
+        self.isrecharged = False
         self.__recharge()
 
         self.collision_manager = collision.CollisionManagerBruteForce()
@@ -64,7 +65,7 @@ class GameScene(Scene):
             position=(WIDTH - 16 * 5, 40),
             color=(225, 225, 225, 225),
         )
-        self.bullets_string.element.text = "Bullets: %04d" % len(
+        self.bullets_string.element.text = "Bullets: %03d" % len(
             self.spaceship.bullets)
 
     def show_hp_string(self):
@@ -103,8 +104,10 @@ class GameScene(Scene):
             if rohenian in collisions:
                 try:
                     self.remove(rohenian)
+                    self.rohenians.remove(rohenian)
                     del rohenian
                     self.remove(bullet)
+                    self.spaceship.bullets_used.remove(bullet)
                     del bullet
                 except:
                     pass
@@ -114,8 +117,10 @@ class GameScene(Scene):
             if aerolite in collisions:
                 try:
                     self.remove(aerolite)
+                    self.aerolites.remove(aerolite)
                     del aerolite
                     self.remove(bullet)
+                    self.spaceship.bullets_used.remove(bullet)
                     del bullet
                 except:
                     pass
@@ -128,7 +133,7 @@ class GameScene(Scene):
     def __spaceship_aerolite_collision(self, collisions):
         for aerolite in self.aerolites:
             if aerolite in collisions:
-                self.spaceship.crash()
+                self.spaceship.crash(aerolite.dmg)
 
     def new_game(self):
         """ Create a new game scene, and add some elements in scene, like the
@@ -160,12 +165,21 @@ class GameScene(Scene):
 
         joystick = EventHandle().joystick
         keyboard = EventHandle().keyboard
+        if not len(self.rohenians):
+            print 'new game!'
+            # self.end()
+
         if joystick is not None:
             if EventHandle()['Select'] is True:
                 director.show_FPS = not director.show_FPS
                 print director.show_FPS
             elif EventHandle()['Start'] is True:
                 print "Show Options"
+            elif EventHandle()['R3'] is True:
+                self.__recharge()
+                self.isrecharged = True
+                self.bullets_string.element.text = "Bullets: %03d" % len(
+                    self.spaceship.bullets)
             elif (True in joystick.buttons) or (joystick.rz != -1):
                 self.__set_bullet_time()
 
@@ -190,16 +204,19 @@ class GameScene(Scene):
             pass
         self.add(bullet_time, z=2)
         bullet_time.do(FireAction())
-        self.bullets_string.element.text = "Bullets: %04d" % len(
+        self.bullets_string.element.text = "Bullets: %03d" % len(
             self.spaceship.bullets)
 
     def __recharge(self):
         """ Recharge the spaceship weapon, requesting new bullets to the
         engine.gunfire.FireFactory"""
-        FireFactory.create_bullets('hero', qnt=2000)
+        if self.isrecharged:
+            return
+        FireFactory.create_bullets('hero', qnt=200)
         bullets = FireFactory().delivery_bullets(
-            'hero', 2000, target=self.spaceship)
+            'hero', 100, target=self.spaceship)
         self.spaceship.bullets += bullets
+        print 'Recharged'
 
     def __collision_manager_add(self):
         """ Add sprites into collision manager to listen to collisions """
