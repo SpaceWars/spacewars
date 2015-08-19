@@ -32,6 +32,8 @@ class EventHandle(object):
         return cls.instance
 
     def __getitem__(self, key):
+        if self.joystick is None:
+            return False
         joypad_buttons = {
             0: 'A',
             1: 'B',
