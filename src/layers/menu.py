@@ -223,13 +223,13 @@ class OptionsMenu(Menu, JoypadMenuSuport):
 
     def on_fullscreen(self, value):
         director.window.set_fullscreen(not director.window.fullscreen)
-        self.show_fullscreen = value
+        self.show_fullscreen = not director.window.fullscreen
 
     def on_quit(self):
         self.parent.switch_to(0)
 
     def on_show_fps(self, value):
-        director.show_FPS = value
+        director.show_FPS = not director.show_FPS
 
     def on_sfx_volume(self, idx):
         self.sound = (self.sound + idx) % 2

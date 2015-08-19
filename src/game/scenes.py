@@ -37,15 +37,19 @@ from pyglet.window import key
 
 class GameScene(Scene):
 
-    def __init__(self, sp=SpaceShipSprite()):
+    def __init__(self, sp=SpaceShipSprite(), waves=3, enemies=5):
         super(GameScene, self).__init__()
         self.background = BackgroundLayer('backgrounds/bluespace.png')
         self.spaceship = sp
+        self.enemies = enemies
+        self.waves = waves * self.enemies * 2
         self.show_bullets_string()
         EnemyFactory.populate_enemy("Aerolite", qnt=15)
         EnemyFactory.populate_enemy("Rohenian", qnt=15)
-        self.aerolites = EnemyFactory.create_enemy("Aerolite", 10)
-        self.rohenians = EnemyFactory.create_enemy("Rohenian", 5)
+        FireFactory.create_bullets('hero', qnt=300)
+        self.aerolites = EnemyFactory.create_enemy(
+            "Aerolite", self.enemies * 2)
+        self.rohenians = EnemyFactory.create_enemy("Rohenian", self.enemies)
         self.isrecharged = False
         self.__recharge()
 
@@ -139,14 +143,15 @@ class GameScene(Scene):
             if aerolite in collisions:
                 self.spaceship.crash(aerolite.dmg)
 
-    def new_game(self):
+    def new_game(self, replay=False):
         """ Create a new game scene, and add some elements in scene, like the
         rohenians, aerolites and spaceship. """
 
-        self.add(self.background, z=0)
-        self.add(self.spaceship, z=3)
-        self.add(self.bullets_string, z=4)
-        self.add(self.hp_string, z=4)
+        if not replay:
+            self.add(self.spaceship, z=3)
+            self.add(self.hp_string, z=4)
+            self.add(self.background, z=0)
+            self.add(self.bullets_string, z=4)
 
         for aero in self.aerolites:
             # Set a randomic  initial position to aerolites
@@ -165,9 +170,22 @@ class GameScene(Scene):
 
     def draw(self):
         if not len(self.rohenians):
-            print 'new game!'
-            # director.replace(
-            #     FadeBLTransition(GameScene(self.spaceship), 1.5))
+            self.enemies *= 2
+            print 'new wave with %d!' % self.enemies
+            if self.enemies >= self.waves:
+                print 'You win!'
+                self.end()
+            self.rohenians = EnemyFactory.create_enemy(
+                "Rohenian", self.enemies)
+            self.new_game()
+            self.__collision_manager_add()
+
+        if len(self.aerolites) < 2:
+            self.aerolites += EnemyFactory.create_enemy(
+                "Aerolite", self.waves / 2)
+            self.new_game()
+            self.__collision_manager_add()
+
         super(GameScene, self).draw()
         keyboard = EventHandle().keyboard
         if (EventHandle()['Start'] is True) or keyboard[key.ENTER]:
@@ -176,7 +194,6 @@ class GameScene(Scene):
         elif (EventHandle()['R3'] is True) or keyboard[key.LCTRL]:
             self.__recharge()
             self.isrecharged = True
-        print director.scene_stack
 
     def __check_buttons(self, *args):
 
@@ -216,9 +233,8 @@ class GameScene(Scene):
         engine.gunfire.FireFactory"""
         if self.isrecharged:
             return
-        FireFactory.create_bullets('hero', qnt=200)
         bullets = FireFactory().delivery_bullets(
-            'hero', 100, target=self.spaceship)
+            'hero', 150, target=self.spaceship)
         self.spaceship.bullets += bullets
         self.bullets_string.element.text = "Bullets: %03d" % len(
             self.spaceship.bullets)
@@ -243,7 +259,43 @@ class Options(Scene, JoypadMenuSuport):
     def __init__(self):
         super(Options, self).__init__()
         self.add(BackgroundLayer('backgrounds/space_background.png'), z=0)
-        self.add(OptionsMenu(), z=1)
+        self.option = OptionsMenu()
+        self.add(self.option, z=1)
+        self.is_event_handler = True
+        self.option.draw = self.draw
+
+        EventHandle().joystick.on_joyaxis_motion = self.on_joyaxis_motion
+
+    def on_joyaxis_motion(self, joystick, axis, value):
+        if (axis is 'x') or (axis is 'hat_x'):
+            return
+        if (abs(value) > 0.1):
+            # print axis, value
+            pass
+        if axis is 'hat_y':
+            value *= -1
+        idx = self.option.selected_index
+        if (value == 1):
+            idx += 1
+        if (value == -1):
+            idx -= 1
+        if idx < 0:
+            idx = len(self.option.children) - 1
+        elif idx > len(self.option.children) - 1:
+            idx = 0
+        self.option._select_item(idx)
+
+    def on_joybutton_press(self, joystick, button):
+        try:
+            # print EventHandle()[button]
+            EventHandle().joystick.on_joyaxis_motion = EventHandle().void
+            EventHandle().joystick.on_joybutton_press = EventHandle().void
+            if EventHandle()[button] is 'B':
+                self.switch_to(0)
+            else:
+                self.option._activate_item()
+        except Exception:
+            pass
 
     def switch_to(self, *args):
         print args
