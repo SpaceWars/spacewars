@@ -25,18 +25,23 @@ from engine.enemy import EnemyFactory
 from engine.gunfire import FireFactory
 from game.sprites import SpaceShipSprite
 from layers.base_layers import BackgroundLayer
+from layers.menu import OptionsMenu
+from engine.event import EventHandle, JoypadMenuSuport
 from pyglet import clock
 from cocos.director import director
 from cocos import text
 from configs import FONT
+from cocos.scenes.transitions import FadeBLTransition
+from pyglet.window import key
 
 
 class GameScene(Scene):
 
-    def __init__(self):
+    def __init__(self, sp=SpaceShipSprite()):
         super(GameScene, self).__init__()
         self.background = BackgroundLayer('backgrounds/bluespace.png')
-        self.spaceship = SpaceShipSprite()
+        self.spaceship = sp
+        self.show_bullets_string()
         EnemyFactory.populate_enemy("Aerolite", qnt=15)
         EnemyFactory.populate_enemy("Rohenian", qnt=15)
         self.aerolites = EnemyFactory.create_enemy("Aerolite", 10)
@@ -51,7 +56,6 @@ class GameScene(Scene):
 
         clock.schedule_interval(self.__check_buttons, .15)
 
-        self.show_bullets_string()
         self.show_hp_string()
 
         self.new_game()
@@ -159,34 +163,34 @@ class GameScene(Scene):
 
         return self
 
-    def __check_buttons(self, *args):
-        from engine.event import EventHandle
-        from pyglet.window import key
-
-        joystick = EventHandle().joystick
-        keyboard = EventHandle().keyboard
+    def draw(self):
         if not len(self.rohenians):
             print 'new game!'
-            # self.end()
+            # director.replace(
+            #     FadeBLTransition(GameScene(self.spaceship), 1.5))
+        super(GameScene, self).draw()
+        keyboard = EventHandle().keyboard
+        if (EventHandle()['Start'] is True) or keyboard[key.ENTER]:
+            print "Show Options"
+            director.push(Options())
+        elif (EventHandle()['R3'] is True) or keyboard[key.LCTRL]:
+            self.__recharge()
+            self.isrecharged = True
+        print director.scene_stack
+
+    def __check_buttons(self, *args):
+
+        keyboard = EventHandle().keyboard
+        joystick = EventHandle().joystick
 
         if joystick is not None:
             if EventHandle()['Select'] is True:
                 director.show_FPS = not director.show_FPS
                 print director.show_FPS
-            elif EventHandle()['Start'] is True:
-                print "Show Options"
-            elif EventHandle()['R3'] is True:
-                self.__recharge()
-                self.isrecharged = True
-                self.bullets_string.element.text = "Bullets: %03d" % len(
-                    self.spaceship.bullets)
-            elif (True in joystick.buttons) or (joystick.rz != -1):
+            elif ((True in joystick.buttons) or
+                  (joystick.rz != -1) or
+                  keyboard[key.SPACE]):
                 self.__set_bullet_time()
-
-        if keyboard[key.SPACE]:
-            self.__set_bullet_time()
-        elif keyboard[key.ENTER]:
-            print "Show Options"
 
     def __set_bullet_time(self):
         try:
@@ -216,7 +220,8 @@ class GameScene(Scene):
         bullets = FireFactory().delivery_bullets(
             'hero', 100, target=self.spaceship)
         self.spaceship.bullets += bullets
-        print 'Recharged'
+        self.bullets_string.element.text = "Bullets: %03d" % len(
+            self.spaceship.bullets)
 
     def __collision_manager_add(self):
         """ Add sprites into collision manager to listen to collisions """
@@ -231,3 +236,23 @@ class GameScene(Scene):
 
         for bullet in self.spaceship.bullets:
             self.collision_manager.add(bullet)
+
+
+class Options(Scene, JoypadMenuSuport):
+
+    def __init__(self):
+        super(Options, self).__init__()
+        self.add(BackgroundLayer('backgrounds/space_background.png'), z=0)
+        self.add(OptionsMenu(), z=1)
+
+    def switch_to(self, *args):
+        print args
+        director.pop()
+
+    def draw(self):
+        super(Options, self).draw()
+        try:
+            EventHandle().joystick.on_joyaxis_motion = self.on_joyaxis_motion
+            EventHandle().joystick.on_joybutton_press = self.on_joybutton_press
+        except Exception:
+            pass

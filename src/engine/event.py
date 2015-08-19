@@ -100,8 +100,7 @@ class JoypadMenuSuport(object):
             EventHandle().joystick.on_joyaxis_motion = EventHandle().void
             EventHandle().joystick.on_joybutton_press = EventHandle().void
             if EventHandle()[button] is 'B':
-                # director.pop()
-                self.parent.switch_to(0)
+                self.on_quit()
             else:
                 self._activate_item()
         except Exception:
