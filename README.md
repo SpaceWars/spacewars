@@ -43,13 +43,21 @@ With the dependencies installed, simply run the **SpaceWars** file located in th
 - SPACE
 	- Shoot.
 - ENTER
-	- Confirm action in the menus.
+	- Confirm action in the menus. Open Options' menu
 - Esc
-	- Return displays the menu navigation or menu opening during the game.
+	- Return displays the menu navigation or quit game.
+- LCTRL
+	- Reload (just 1 time)
 	
 #### Joystick
 
-- Directionals
+- Directionals & Analogicals
 	- Control the ship and navigation menus.
+- R3
+	- Reload (just 1 time)
 - Buttons
 	- Shoot.
+- Start
+	- Open Options' menu
+- Select
+	- Show FPS
