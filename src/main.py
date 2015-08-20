@@ -64,6 +64,8 @@ if __name__ == "__main__":
     resource.path.append('data')
     resource.reindex()
     font.add_directory('data/fonts')
+    # See to personal options
+    # https://pyglet.readthedocs.org/en/pyglet-1.2-maintenance/programming_guide/resources.html
 
     signal.signal(signal.SIGINT, signal_handler)
 
@@ -77,11 +79,15 @@ if __name__ == "__main__":
     clock.schedule_interval(connect_joystick, .1)
 
     # Create a initial menu scene
+    from game.scenes import Openning
     scene = Scene()
     scene.add(BackgroundLayer('backgrounds/space_background.png'), z=0)
-    scene.add(MultiplexLayer(MainMenu(),
-                             Credits(),
-                             OptionsMenu()), z=1)
+    group = MultiplexLayer(MainMenu(),
+                           Credits(),
+                           OptionsMenu(),
+                           Openning())
+    # group.switch_to(3)
+    scene.add(group, z=2)
     print """
     SpaceWars  Copyright (C) 2015 Luiz Fernando Oliveira, Carlos Oliveira,
     Matheus Souza Fernandes

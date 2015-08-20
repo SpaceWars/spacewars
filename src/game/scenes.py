@@ -26,18 +26,64 @@ from engine.gunfire import FireFactory
 from game.sprites import SpaceShipSprite
 from layers.base_layers import BackgroundLayer
 from layers.menu import OptionsMenu
-from engine.event import EventHandle, JoypadMenuSuport
+from engine.event import EventHandle
 from pyglet import clock
+from cocos.sprite import Sprite
 from cocos.director import director
 from cocos import text
 from configs import FONT
-from cocos.scenes.transitions import FadeBLTransition
 from pyglet.window import key
+import pyglet
+
+
+class JoypadSceneSupport(Scene):
+
+    """docstring for JoypadSceneSupport"""
+    layer = None
+
+    def on_joyaxis_motion(self, joystick, axis, value):
+        if (axis is 'x') or (axis is 'hat_x'):
+            return
+        if (abs(value) > 0.1):
+            # print axis, value
+            pass
+        if axis is 'hat_y':
+            value *= -1
+        idx = self.layer.selected_index
+        if (value == 1):
+            idx += 1
+        if (value == -1):
+            idx -= 1
+        if idx < 0:
+            idx = len(self.layer.children) - 1
+        elif idx > len(self.layer.children) - 1:
+            idx = 0
+        self.layer._select_item(idx)
+
+    def on_joybutton_press(self, joystick, button):
+        try:
+            if EventHandle()[button] is 'B':
+                self.switch_to(0)
+            else:
+                self.layer._activate_item()
+        except Exception:
+            pass
+
+    def switch_to(self, *args):
+        director.pop()
+
+    def draw(self):
+        super(JoypadSceneSupport, self).draw()
+        try:
+            EventHandle().joystick.on_joyaxis_motion = self.on_joyaxis_motion
+            EventHandle().joystick.on_joybutton_press = self.on_joybutton_press
+        except Exception:
+            pass
 
 
 class GameScene(Scene):
 
-    def __init__(self, sp=SpaceShipSprite(), waves=3, enemies=5):
+    def __init__(self, sp=SpaceShipSprite(), waves=1, enemies=5):
         super(GameScene, self).__init__()
         self.background = BackgroundLayer('backgrounds/bluespace.png')
         self.spaceship = sp
@@ -174,7 +220,10 @@ class GameScene(Scene):
             print 'new wave with %d!' % self.enemies
             if self.enemies >= self.waves:
                 print 'You win!'
-                self.end()
+                victory = 'data/sound/victory.wav'
+                pyglet.resource.media(victory, streaming=False).play()
+                # self.end()
+                director.replace(Openning())
             self.rohenians = EnemyFactory.create_enemy(
                 "Rohenian", self.enemies)
             self.new_game()
@@ -203,7 +252,6 @@ class GameScene(Scene):
         if joystick is not None:
             if EventHandle()['Select'] is True:
                 director.show_FPS = not director.show_FPS
-                print director.show_FPS
             elif ((True in joystick.buttons) or
                   (joystick.rz != -1) or
                   keyboard[key.SPACE]):
@@ -254,57 +302,78 @@ class GameScene(Scene):
             self.collision_manager.add(bullet)
 
 
-class Options(Scene, JoypadMenuSuport):
+class Options(JoypadSceneSupport):
 
     def __init__(self):
         super(Options, self).__init__()
-        self.add(BackgroundLayer('backgrounds/space_background.png'), z=0)
-        self.option = OptionsMenu()
-        self.add(self.option, z=1)
+        world_width, world_height = director.get_window_size()
+        self.add(
+            Sprite('backgrounds/space_background.png',
+                   opacity=255,
+                   position=(world_width / 2, world_height / 2)), z=0)
+        self.layer = OptionsMenu()
+        self.add(self.layer, z=1)
         self.is_event_handler = True
-        self.option.draw = self.draw
+        self.layer.draw = self.draw
 
         EventHandle().joystick.on_joyaxis_motion = self.on_joyaxis_motion
 
+
+class Openning(JoypadSceneSupport):
+
+    """docstring for Openning"""
+
+    def __init__(self):
+        super(Openning, self).__init__()
+        world_width, world_height = director.get_window_size()
+        animation = pyglet.image.load_animation(
+            'data/backgrounds/spaceship.gif')
+        spaceship = Sprite(
+            animation, position=(world_width / 2, world_height / 2),
+            scale=2)
+
+        spaceship.on_animation_end = self.on_animation_end
+        spaceship.on_key_press = self.on_key_press
+        spaceship.on_exit = self.on_exit
+        self.is_event_handler = True
+        self.add(spaceship)
+
+    def on_animation_end(self):
+        self.continue_string = text.Label(
+            '',
+            font_name=FONT['body'],
+            font_size=16,
+            anchor_x='center', anchor_y='center',
+            position=(WIDTH - 16 * 5, 40),
+            color=(225, 225, 225, 225),
+        )
+        self.continue_string.element.text = "Press to continue"
+        self.add(self.continue_string)
+
+    def on_key_press(self, key, modifiers):
+        print key
+        self.on_exit()
+
     def on_joyaxis_motion(self, joystick, axis, value):
-        if (axis is 'x') or (axis is 'hat_x'):
-            return
-        if (abs(value) > 0.1):
-            # print axis, value
-            pass
-        if axis is 'hat_y':
-            value *= -1
-        idx = self.option.selected_index
-        if (value == 1):
-            idx += 1
-        if (value == -1):
-            idx -= 1
-        if idx < 0:
-            idx = len(self.option.children) - 1
-        elif idx > len(self.option.children) - 1:
-            idx = 0
-        self.option._select_item(idx)
+        pass
 
     def on_joybutton_press(self, joystick, button):
         try:
-            # print EventHandle()[button]
-            EventHandle().joystick.on_joyaxis_motion = EventHandle().void
-            EventHandle().joystick.on_joybutton_press = EventHandle().void
-            if EventHandle()[button] is 'B':
-                self.switch_to(0)
+            if EventHandle().joystick is not None:
+                self.on_exit()
             else:
-                self.option._activate_item()
+                pass
         except Exception:
             pass
 
-    def switch_to(self, *args):
-        print args
-        director.pop()
-
-    def draw(self):
-        super(Options, self).draw()
-        try:
-            EventHandle().joystick.on_joyaxis_motion = self.on_joyaxis_motion
-            EventHandle().joystick.on_joybutton_press = self.on_joybutton_press
-        except Exception:
-            pass
+    def on_exit(self):
+        director.__dict__
+        from layers.menu import MainMenu, Credits, OptionsMenu
+        from cocos.layer import MultiplexLayer
+        scene = Scene()
+        scene.add(BackgroundLayer('backgrounds/space_background.png'), z=0)
+        group = MultiplexLayer(MainMenu(),
+                               Credits(),
+                               OptionsMenu())
+        scene.add(group, z=2)
+        director.replace(scene)

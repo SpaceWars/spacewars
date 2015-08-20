@@ -83,7 +83,6 @@ class MainMenu(Menu, JoypadMenuSuport):
         self.menu_items.append(MenuItem('Quit', self.on_quit))
 
     def on_quit(self):
-        print "Quit pressed"
         exit(0)
 
     def new_game(self):
