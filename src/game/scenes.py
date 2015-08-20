@@ -83,7 +83,7 @@ class JoypadSceneSupport(Scene):
 
 class GameScene(Scene):
 
-    def __init__(self, sp=SpaceShipSprite(), waves=1, enemies=5):
+    def __init__(self, sp=SpaceShipSprite(), waves=4, enemies=7):
         super(GameScene, self).__init__()
         self.background = BackgroundLayer('backgrounds/bluespace.png')
         self.spaceship = sp
@@ -315,8 +315,10 @@ class Options(JoypadSceneSupport):
         self.add(self.layer, z=1)
         self.is_event_handler = True
         self.layer.draw = self.draw
-
-        EventHandle().joystick.on_joyaxis_motion = self.on_joyaxis_motion
+        try:
+            EventHandle().joystick.on_joyaxis_motion = self.on_joyaxis_motion
+        except AttributeError:
+            pass
 
 
 class Openning(JoypadSceneSupport):
