@@ -221,7 +221,7 @@ class GameScene(Scene):
             if self.enemies >= self.waves:
                 print 'You win!'
                 victory = 'data/sound/victory.wav'
-                pyglet.resource.media(victory, streaming=False).play()
+                # pyglet.resource.media(victory, streaming=False).play()
                 # self.end()
                 director.replace(Openning())
             self.rohenians = EnemyFactory.create_enemy(
@@ -253,9 +253,10 @@ class GameScene(Scene):
             if EventHandle()['Select'] is True:
                 director.show_FPS = not director.show_FPS
             elif ((True in joystick.buttons) or
-                  (joystick.rz != -1) or
-                  keyboard[key.SPACE]):
+                  (joystick.rz != -1)):
                 self.__set_bullet_time()
+        if keyboard[key.SPACE]:
+            self.__set_bullet_time()
 
     def __set_bullet_time(self):
         try:
