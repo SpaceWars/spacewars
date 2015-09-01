@@ -25,6 +25,6 @@ __license__ = "GPL3"
 # Date release
 __date__ = '2015'
 # Actual version
-__version__ = "0.1"
+__version__ = "0.8"
 # Authors
 __author__ = "Luiz Fernando Oliveira, Carlos Oliveira, Matheus Souza Fernandez"
