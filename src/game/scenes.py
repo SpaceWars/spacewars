@@ -83,6 +83,8 @@ class JoypadSceneSupport(Scene):
 
 class GameScene(Scene):
 
+    """ Basic game scene """
+
     def __init__(self, sp=SpaceShipSprite(), waves=4, enemies=7):
         super(GameScene, self).__init__()
         self.background = BackgroundLayer('backgrounds/bluespace.png')
@@ -305,6 +307,8 @@ class GameScene(Scene):
 
 class Options(JoypadSceneSupport):
 
+    """ Game scene for options """
+
     def __init__(self):
         super(Options, self).__init__()
         world_width, world_height = director.get_window_size()
@@ -324,7 +328,7 @@ class Options(JoypadSceneSupport):
 
 class Openning(JoypadSceneSupport):
 
-    """docstring for Openning"""
+    """ Game scene for Openning"""
 
     def __init__(self):
         super(Openning, self).__init__()

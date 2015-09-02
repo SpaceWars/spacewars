@@ -31,6 +31,8 @@ from os import listdir
 
 
 def connect_joystick(*args):
+    """ Hundle the joystick settings, keeping it updated """
+
     if EventHandle().joystick_device is not None:
         devices = listdir('/dev/input')
         if 'js0' not in devices:
