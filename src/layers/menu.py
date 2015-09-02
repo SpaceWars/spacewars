@@ -86,7 +86,7 @@ class MainMenu(Menu, JoypadMenuSuport):
         exit(0)
 
     def new_game(self):
-        print "New game selected"
+        print("New game selected")
         from game.scenes import GameScene
 
         self.game_scene = GameScene()
@@ -94,11 +94,11 @@ class MainMenu(Menu, JoypadMenuSuport):
         director.push(FadeBLTransition(self.game_scene, 1.5))
 
     def credits(self):
-        print "Show me the credits!"
+        print("Show me the credits!")
         self.parent.switch_to(1)
 
     def options(self):
-        print "Choose your options"
+        print("Choose your options")
         self.parent.switch_to(2)
 
     def draw(self):
@@ -144,7 +144,7 @@ Mateus Souza Fernandes
 """
 
     def on_quit(self):
-        print 'sair'
+        print('sair')
         self.parent.switch_to(0)
 
     def on_key_press(self, key, modifiers):

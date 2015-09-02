@@ -217,9 +217,9 @@ class GameScene(Scene):
     def draw(self):
         if not len(self.rohenians):
             self.enemies *= 2
-            print 'new wave with %d!' % self.enemies
+            print('new wave with %d enemies!' % self.enemies)
             if self.enemies >= self.waves:
-                print 'You win!'
+                print('You win!')
                 victory = 'data/sound/victory.wav'
                 # pyglet.resource.media(victory, streaming=False).play()
                 # self.end()
@@ -238,7 +238,7 @@ class GameScene(Scene):
         super(GameScene, self).draw()
         keyboard = EventHandle().keyboard
         if (EventHandle()['Start'] is True) or keyboard[key.ENTER]:
-            print "Show Options"
+            print("Show Options")
             director.push(Options())
         elif (EventHandle()['R3'] is True) or keyboard[key.LCTRL]:
             self.__recharge()
@@ -354,7 +354,7 @@ class Openning(JoypadSceneSupport):
         self.add(self.continue_string)
 
     def on_key_press(self, key, modifiers):
-        print key
+        print(key)
         self.on_exit()
 
     def on_joyaxis_motion(self, joystick, axis, value):

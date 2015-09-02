@@ -47,7 +47,7 @@ def connect_joystick(*args):
         EventHandle().joystick.open()
         EventHandle().joystick.z = EventHandle().joystick.rz = -1
         EventHandle().joystick_device = input.get_devices()[0]
-        print "%s connected" % EventHandle().joystick_device.name
+        print("%s connected" % EventHandle().joystick_device.name)
     except Exception:
         pass
 
@@ -56,7 +56,7 @@ def signal_handler(signal_received, frame):
     """ Handle Ctrl + C signal """
     if signal_received is signal.SIGINT:
         # erase the ^C on Terminal
-        print "\r  "
+        print("\r  ")
         exit(0)
 
 if __name__ == "__main__":
@@ -88,12 +88,12 @@ if __name__ == "__main__":
                            Openning())
     # group.switch_to(3)
     scene.add(group, z=2)
-    print """
+    print ("""
     SpaceWars  Copyright (C) 2015 Luiz Fernando Oliveira, Carlos Oliveira,
     Matheus Souza Fernandes
 
     This program comes with ABSOLUTELY NO WARRANTY; for details type `show w'.
     This is free software, and you are welcome to redistribute it
     under certain conditions; type `show c' for details.
-    """
+    """)
     director.run(scene)

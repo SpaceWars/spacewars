@@ -80,11 +80,11 @@ class FireFactory(object):
         return ret
 
 if __name__ == '__main__':
-    print FireFactory.many_ammo()
+    print(FireFactory.many_ammo())
     FireFactory.create_bullets('hero', 300)
-    print FireFactory.many_ammo()
+    print(FireFactory.many_ammo())
     FireFactory.create_bullets('ro', 30)
     FireFactory.delivery_bullets('hero', 150)
-    print FireFactory.many_ammo()
+    print(FireFactory.many_ammo())
     FireFactory.create_bullets('enemies', 3)
-    print FireFactory.many_ammo()
+    print(FireFactory.many_ammo())

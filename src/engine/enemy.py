@@ -80,14 +80,14 @@ class EnemyFactory(object):
 
 
 if __name__ == '__main__':
-    print EnemyFactory.return_enemy_list()
+    print(EnemyFactory.return_enemy_list())
     EnemyFactory.populate_enemy("Aerolite", qnt=5)
     EnemyFactory.populate_enemy("Rohenian", qnt=5)
-    print EnemyFactory.return_enemy_list()
+    print(EnemyFactory.return_enemy_list())
 
     b = EnemyFactory.create_enemy("Aerolite", 10)
-    print len(b)
-    print EnemyFactory.return_enemy_list()
+    print(len(b))
+    print(EnemyFactory.return_enemy_list())
     a = EnemyFactory.create_enemy("Rohenian")
-    print a[0].say()
-    print EnemyFactory.return_enemy_list()
+    print(a[0].say())
+    print(EnemyFactory.return_enemy_list())
