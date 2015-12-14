@@ -27,7 +27,7 @@ from pyglet import input
 from pyglet import resource, font
 from pyglet.window import key
 from pyglet import clock
-from os import listdir
+from os import listdir, system
 
 
 def connect_joystick(*args):
@@ -61,11 +61,13 @@ def signal_handler(signal_received, frame):
         print("\r  ")
         exit(0)
 
-if __name__ == "__main__":
+
+def main():
     # Add pyglet resources directories
+    system('pwd')
     resource.path.append('data')
     resource.reindex()
-    font.add_directory('data/fonts')
+    # font.add_directory('data/fonts')
     # See to personal options
     # https://pyglet.readthedocs.org/en/pyglet-1.2-maintenance/programming_guide/resources.html
 
@@ -99,3 +101,6 @@ if __name__ == "__main__":
     under certain conditions; type `show c' for details.
     """)
     director.run(scene)
+
+if __name__ == "__main__":
+    main()
