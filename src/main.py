@@ -34,24 +34,29 @@ import logging.config
 
 def connect_joystick(*args):
     """ Hundle the joystick settings, keeping it updated """
-
+    logger = logging.getLogger(__name__)
     if EventHandle().joystick_device is not None:
         devices = listdir('/dev/input')
         if 'js0' not in devices:
-            print("%s disconnected " % (EventHandle().joystick_device.name))
+            logger.info("{} disconnected ".format(
+                EventHandle().joystick_device.name))
             input.evdev._devices = {}
             EventHandle().joystick = None
             EventHandle().joystick_device = None
-        return
+            return
+        else:
+            logger.info("{} still connected ".format(
+                EventHandle().joystick_device.name))
+            return
         if 'js1' not in devices:
-            print("Only 1 joystick is supported for now")
+            logger.info("Only 1 joystick is supported for now")
     try:
         # Check if joystick is connected
         EventHandle().joystick = input.get_joysticks()[0]
         EventHandle().joystick.open()
         EventHandle().joystick.z = EventHandle().joystick.rz = -1
         EventHandle().joystick_device = input.get_devices()[0]
-        print("%s connected" % EventHandle().joystick_device.name)
+        logger.info("{} connected ".format(EventHandle().joystick_device.name))
     except Exception:
         pass
 

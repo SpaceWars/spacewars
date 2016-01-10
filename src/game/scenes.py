@@ -222,10 +222,11 @@ class GameScene(Scene):
             print('new wave with %d enemies!' % self.enemies)
             if self.enemies >= self.waves:
                 print('You win!')
-                victory = 'data/sound/victory.wav'
-                # pyglet.resource.media(victory, streaming=False).play()
+                victory = 'sound/victory.wav'
+                pyglet.resource.media(victory, streaming=False).play()
                 # self.end()
-                director.replace(Openning())
+                # director.replace(Openning())
+                director.push(Openning())
             self.rohenians = EnemyFactory.create_enemy(
                 "Rohenian", self.enemies)
             self.new_game()
@@ -348,6 +349,8 @@ class Openning(JoypadSceneSupport):
         spaceship.on_exit = self.on_exit
         self.is_event_handler = True
         self.add(spaceship)
+        EnemyFactory.clear()
+        FireFactory.clear()
 
     def on_animation_end(self):
         self.continue_string = text.Label(
@@ -378,13 +381,4 @@ class Openning(JoypadSceneSupport):
             pass
 
     def on_exit(self):
-        director.__dict__
-        from layers.menu import MainMenu, Credits, OptionsMenu
-        from cocos.layer import MultiplexLayer
-        scene = Scene()
-        scene.add(BackgroundLayer('backgrounds/space_background.png'), z=0)
-        group = MultiplexLayer(MainMenu(),
-                               Credits(),
-                               OptionsMenu())
-        scene.add(group, z=2)
-        director.replace(scene)
+        director.pop()
