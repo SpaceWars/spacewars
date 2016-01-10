@@ -27,7 +27,9 @@ from pyglet import input
 from pyglet import resource, font
 from pyglet.window import key
 from pyglet import clock
-from os import listdir, system
+from os import listdir, path
+import logging
+import logging.config
 
 
 def connect_joystick(*args):
@@ -63,11 +65,17 @@ def signal_handler(signal_received, frame):
 
 
 def main():
+    global logger
+    # load the logging configuration
+    real_path = path.dirname(path.realpath(__file__))
+    logging.config.fileConfig(real_path + '/logging.ini')
+    real_path += '/data/'
+    logger = logging.getLogger(__name__)
+    logger.info('Starting the game from ' + real_path)
     # Add pyglet resources directories
-    system('pwd')
-    resource.path.append('data')
+    resource.path.append(real_path)
+    font.add_directory(real_path + '/fonts')
     resource.reindex()
-    # font.add_directory('data/fonts')
     # See to personal options
     # https://pyglet.readthedocs.org/en/pyglet-1.2-maintenance/programming_guide/resources.html
 
@@ -85,7 +93,8 @@ def main():
     # Create a initial menu scene
     from game.scenes import Openning
     scene = Scene()
-    scene.add(BackgroundLayer('backgrounds/space_background.png'), z=0)
+    scene.add(BackgroundLayer(
+        'backgrounds/space_background.png'), z=0)
     group = MultiplexLayer(MainMenu(),
                            Credits(),
                            OptionsMenu(),

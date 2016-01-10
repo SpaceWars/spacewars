@@ -103,13 +103,13 @@ class SpaceshipAction(actions.Move):
 
         if self.target.velocity[0] > 0:
             self.target.image = resource.image(
-                'data/sprites/spaceship/right4.png')
+                'sprites/spaceship/right4.png')
         elif self.target.velocity[0] < 0:
             self.target.image = resource.image(
-                'data/sprites/spaceship/left4.png')
+                'sprites/spaceship/left4.png')
         else:
             self.target.image = resource.image(
-                'data/sprites/spaceship/center.png')
+                'sprites/spaceship/center.png')
 
     def __bound_limits(self):
         """ Check if the spaceship is inside a valid position (bottom) """

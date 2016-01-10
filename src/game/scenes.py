@@ -332,9 +332,13 @@ class Openning(JoypadSceneSupport):
 
     def __init__(self):
         super(Openning, self).__init__()
+        from os import path
+        real_path = path.dirname(path.realpath(__file__))
+        real_path = real_path.split('/game')[0]
+        real_path += '/data/'
         world_width, world_height = director.get_window_size()
         animation = pyglet.image.load_animation(
-            'data/backgrounds/spaceship.gif')
+            real_path + 'backgrounds/spaceship.gif')
         spaceship = Sprite(
             animation, position=(world_width / 2, world_height / 2),
             scale=2)
