@@ -65,7 +65,6 @@ def signal_handler(signal_received, frame):
 
 
 def main():
-    global logger
     # load the logging configuration
     real_path = path.dirname(path.realpath(__file__))
     logging.config.fileConfig(real_path + '/logging.ini')

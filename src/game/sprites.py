@@ -22,12 +22,6 @@ from configs import WIDTH, HEIGHT
 from engine.action import AeroliteAction, SpaceshipAction, RohinianAction
 from pyglet import resource
 import cocos.collision_model as collision
-from os import path
-
-global real_path
-real_path = path.dirname(path.realpath(__file__))
-real_path = real_path.split('/game')[0]
-real_path += '/data/'
 
 
 class SpaceShipSprite(Sprite):
