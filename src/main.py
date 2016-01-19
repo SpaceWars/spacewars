@@ -27,29 +27,36 @@ from pyglet import input
 from pyglet import resource, font
 from pyglet.window import key
 from pyglet import clock
-from os import listdir
+from os import listdir, path
+import logging
+import logging.config
 
 
 def connect_joystick(*args):
     """ Hundle the joystick settings, keeping it updated """
-
+    logger = logging.getLogger(__name__)
     if EventHandle().joystick_device is not None:
         devices = listdir('/dev/input')
         if 'js0' not in devices:
-            print("%s disconnected " % (EventHandle().joystick_device.name))
+            logger.info("{} disconnected ".format(
+                EventHandle().joystick_device.name))
             input.evdev._devices = {}
             EventHandle().joystick = None
             EventHandle().joystick_device = None
-        return
+            return
+        else:
+            logger.info("{} still connected ".format(
+                EventHandle().joystick_device.name))
+            return
         if 'js1' not in devices:
-            print("Only 1 joystick is supported for now")
+            logger.info("Only 1 joystick is supported for now")
     try:
         # Check if joystick is connected
         EventHandle().joystick = input.get_joysticks()[0]
         EventHandle().joystick.open()
         EventHandle().joystick.z = EventHandle().joystick.rz = -1
         EventHandle().joystick_device = input.get_devices()[0]
-        print("%s connected" % EventHandle().joystick_device.name)
+        logger.info("{} connected ".format(EventHandle().joystick_device.name))
     except Exception:
         pass
 
@@ -61,11 +68,18 @@ def signal_handler(signal_received, frame):
         print("\r  ")
         exit(0)
 
-if __name__ == "__main__":
+
+def main():
+    # load the logging configuration
+    real_path = path.dirname(path.realpath(__file__))
+    logging.config.fileConfig(real_path + '/logging.ini')
+    real_path += '/data/'
+    logger = logging.getLogger(__name__)
+    logger.info('Starting the game from ' + real_path)
     # Add pyglet resources directories
-    resource.path.append('data')
+    resource.path.append(real_path)
+    font.add_directory(real_path + '/fonts')
     resource.reindex()
-    font.add_directory('data/fonts')
     # See to personal options
     # https://pyglet.readthedocs.org/en/pyglet-1.2-maintenance/programming_guide/resources.html
 
@@ -83,7 +97,8 @@ if __name__ == "__main__":
     # Create a initial menu scene
     from game.scenes import Openning
     scene = Scene()
-    scene.add(BackgroundLayer('backgrounds/space_background.png'), z=0)
+    scene.add(BackgroundLayer(
+        'backgrounds/space_background.png'), z=0)
     group = MultiplexLayer(MainMenu(),
                            Credits(),
                            OptionsMenu(),
@@ -99,3 +114,6 @@ if __name__ == "__main__":
     under certain conditions; type `show c' for details.
     """)
     director.run(scene)
+
+if __name__ == "__main__":
+    main()

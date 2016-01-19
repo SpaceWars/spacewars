@@ -38,6 +38,17 @@ class FireFactory(object):
         return cls.instance
 
     @classmethod
+    def clear(cls):
+        for i in cls.ammo['hero']:
+            i.stop()
+            del i
+        for i in cls.ammo['enemies']:
+            i.stop()
+            del i
+        del cls.ammo
+        cls.ammo = {'hero': [], 'enemies': []}
+
+    @classmethod
     def create_bullets(cls, bullet_type, qnt=50):
         """ Populate a pool of objects, maybe of SpaceShipBullet or
         RoheniansBullet"""

@@ -59,6 +59,17 @@ class EnemyFactory(object):
         return cls.enemy_list
 
     @classmethod
+    def clear(cls):
+        for i in cls.enemy_list['Rohenian']:
+            i.stop()
+            del i
+        for i in cls.enemy_list['Aerolite']:
+            i.stop()
+            del i
+        del cls.enemy_list
+        cls.enemy_list = {"Rohenian": [], "Aerolite": []}
+
+    @classmethod
     def create_enemy(cls, enemy_type, qnt=1):
         if len(cls.enemy_list[enemy_type]) < qnt:
             cls.populate_enemy(
