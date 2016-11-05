@@ -41,13 +41,13 @@ class EnemyFactory(object):
         """ Populate pool of objects """
 
         if enemy_type in rohenian:
-            for x in xrange(0, qnt):
+            for x in range(0, qnt):
                 cls.enemy_list["Rohenian"].append(
                     Rohenian())
             cls.is_empty = False
             return
         if enemy_type in aerolite:
-            for x in xrange(0, qnt):
+            for x in range(0, qnt):
                 cls.enemy_list["Aerolite"].append(
                     Aerolite())
             cls.is_empty = False

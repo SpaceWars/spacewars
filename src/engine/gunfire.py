@@ -54,10 +54,10 @@ class FireFactory(object):
         RoheniansBullet"""
 
         if bullet_type in hero:
-            for x in xrange(0, qnt):
+            for x in range(0, qnt):
                 cls.ammo['hero'].append(SpaceShipBullet())
         elif bullet_type in rohenian:
-            for x in xrange(0, qnt):
+            for x in range(0, qnt):
                 cls.ammo['enemies'].append(RoheniansBullet())
 
     @classmethod
