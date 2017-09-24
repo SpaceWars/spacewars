@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python
 # -*- coding:utf-8 -*-
 
 """
@@ -24,7 +24,7 @@ from engine.event import EventHandle
 from layers.base_layers import BackgroundLayer
 from layers.menu import MainMenu, Credits, OptionsMenu
 from pyglet import input
-from pyglet import resource, font
+from pyglet import resource, font, options
 from pyglet.window import key
 from pyglet import clock
 from os import listdir, path
@@ -77,11 +77,13 @@ def main():
     logger = logging.getLogger(__name__)
     logger.info('Starting the game from ' + real_path)
     # Add pyglet resources directories
+    options['audio'] = ('openal', 'silent')
+
     resource.path.append(real_path)
     font.add_directory(real_path + '/fonts')
     resource.reindex()
     # See to personal options
-    # https://pyglet.readthedocs.org/en/pyglet-1.2-maintenance/programming_guide/resources.html
+    # https://pyglet.readthedocs.org/en/pyglet-1.2-maintenance/programming_guide/resources
 
     signal.signal(signal.SIGINT, signal_handler)
 
