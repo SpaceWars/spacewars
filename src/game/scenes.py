@@ -234,7 +234,7 @@ class GameScene(Scene):
 
         if len(self.aerolites) < 2:
             self.aerolites += EnemyFactory.create_enemy(
-                "Aerolite", self.waves / 2)
+                "Aerolite", self.waves // 2)
             self.new_game()
             self.__collision_manager_add()
 
