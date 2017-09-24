@@ -133,14 +133,14 @@ class GameScene(Scene):
             position=(80, 40),
             color=(225, 225, 225, 225),
         )
-        self.hp_string.element.text = "Health: 100%"
+        self.hp_string.element.text = "Health: 100"
 
     def check_collisions(self, dt):
         if self.spaceship.health < 0:
             director.pop()
         else:
             health = self.spaceship.health / 5
-            self.hp_string.element.text = "Health: " + str(health * 100) + "%"
+            self.hp_string.element.text = "Health: %03d" % (health * 100)
 
         ship_collisions = self.collision_manager.objs_colliding(self.spaceship)
         if ship_collisions:
