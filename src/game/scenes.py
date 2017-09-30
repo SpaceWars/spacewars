@@ -19,7 +19,7 @@ import random
 
 from cocos.actions import MoveTo
 from cocos.scene import Scene
-from configs import WIDTH
+from configs import HEIGHT, WIDTH
 from engine.action import FireAction
 from engine.enemy import EnemyFactory
 from engine.gunfire import FireFactory
@@ -134,6 +134,17 @@ class GameScene(Scene):
             color=(225, 225, 225, 225),
         )
         self.hp_string.element.text = "Health: 100"
+
+    def show_score_string(self):
+        self.score_string = text.Label(
+            '',
+            font_name=FONT['body'],
+            font_size=16,
+            anchor_x='center', anchor_y='center',
+            position=(80, HEIGHT - 16 * 2),
+            color=(225, 225, 225, 225),
+        )
+        self.score_string.element.text = "Score: 0"
 
     def check_collisions(self, dt):
         if self.spaceship.health < 0:
