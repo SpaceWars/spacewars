@@ -180,6 +180,7 @@ class GameScene(Scene):
                     del rohenian
                     self.remove(bullet)
                     self.spaceship.bullets_used.remove(bullet)
+                    self.spaceship.score += 10
                     del bullet
                 except:
                     pass
@@ -193,6 +194,7 @@ class GameScene(Scene):
                     del aerolite
                     self.remove(bullet)
                     self.spaceship.bullets_used.remove(bullet)
+                    self.spaceship.score += 5
                     del bullet
                 except:
                     pass
