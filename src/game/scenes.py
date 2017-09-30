@@ -159,6 +159,8 @@ class GameScene(Scene):
             self.__spaceship_rohinian_collision(ship_collisions)
             self.__spaceship_aerolite_collision(ship_collisions)
 
+        score = self.spaceship.score
+
         self.score_string.element.text = "Score: %03d" % score
 
         self.__bullet_collisions()

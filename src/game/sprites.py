@@ -33,6 +33,7 @@ class SpaceShipSprite(Sprite):
         super(SpaceShipSprite, self).__init__(image)
 
         self.health = 5
+        self.score = 0
         self.position = (WIDTH / 2, - self.image.height)
         self.scale = 0.25
         self.velocity = (0, 0)
