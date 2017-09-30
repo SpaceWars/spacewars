@@ -19,7 +19,7 @@ import random
 
 from cocos.actions import MoveTo
 from cocos.scene import Scene
-from configs import WIDTH
+from configs import HEIGHT, WIDTH
 from engine.action import FireAction
 from engine.enemy import EnemyFactory
 from engine.gunfire import FireFactory
@@ -109,6 +109,7 @@ class GameScene(Scene):
         clock.schedule_interval(self.__check_buttons, .15)
 
         self.show_hp_string()
+        self.show_score_string()
 
         self.new_game()
 
@@ -135,6 +136,17 @@ class GameScene(Scene):
         )
         self.hp_string.element.text = "Health: 100"
 
+    def show_score_string(self):
+        self.score_string = text.Label(
+            '',
+            font_name=FONT['body'],
+            font_size=16,
+            anchor_x='center', anchor_y='center',
+            position=(80, HEIGHT - 16 * 2),
+            color=(225, 225, 225, 225),
+        )
+        self.score_string.element.text = "Score: 0"
+
     def check_collisions(self, dt):
         if self.spaceship.health < 0:
             director.pop()
@@ -146,6 +158,10 @@ class GameScene(Scene):
         if ship_collisions:
             self.__spaceship_rohinian_collision(ship_collisions)
             self.__spaceship_aerolite_collision(ship_collisions)
+
+        score = self.spaceship.score
+
+        self.score_string.element.text = "Score: %03d" % score
 
         self.__bullet_collisions()
 
@@ -164,6 +180,7 @@ class GameScene(Scene):
                     del rohenian
                     self.remove(bullet)
                     self.spaceship.bullets_used.remove(bullet)
+                    self.spaceship.score += 10
                     del bullet
                 except:
                     pass
@@ -177,6 +194,7 @@ class GameScene(Scene):
                     del aerolite
                     self.remove(bullet)
                     self.spaceship.bullets_used.remove(bullet)
+                    self.spaceship.score += 5
                     del bullet
                 except:
                     pass
@@ -198,6 +216,7 @@ class GameScene(Scene):
         if not replay:
             self.add(self.spaceship, z=3)
             self.add(self.hp_string, z=4)
+            self.add(self.score_string, z=4)
             self.add(self.background, z=0)
             self.add(self.bullets_string, z=4)
 
