@@ -109,6 +109,7 @@ class GameScene(Scene):
         clock.schedule_interval(self.__check_buttons, .15)
 
         self.show_hp_string()
+        self.show_score_string()
 
         self.new_game()
 
@@ -157,6 +158,8 @@ class GameScene(Scene):
         if ship_collisions:
             self.__spaceship_rohinian_collision(ship_collisions)
             self.__spaceship_aerolite_collision(ship_collisions)
+
+        self.score_string.element.text = "Score: %03d" % score
 
         self.__bullet_collisions()
 
@@ -209,6 +212,7 @@ class GameScene(Scene):
         if not replay:
             self.add(self.spaceship, z=3)
             self.add(self.hp_string, z=4)
+            self.add(self.score_string, z=4)
             self.add(self.background, z=0)
             self.add(self.bullets_string, z=4)
 
