@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=3 uid="uid://bcfa2k3lb7luv"]
+
+[ext_resource type="Script" path="res://scenes/GUI.gd" id="1_57sar"]
+[ext_resource type="FontFile" uid="uid://vjhldmmabb05" path="res://assets/fonts/TitilliumWeb.ttf" id="2_17sob"]
+
+[node name="GUI" type="PanelContainer"]
+offset_right = 172.0
+offset_bottom = 27.0
+scale = Vector2(3, 3)
+script = ExtResource("1_57sar")
+
+[node name="ProgressBar" type="ProgressBar" parent="."]
+layout_mode = 2
+tooltip_text = "HP"
+theme_override_fonts/font = ExtResource("2_17sob")
+value = 100.0

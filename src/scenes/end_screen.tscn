@@ -1,0 +1,19 @@
+[gd_scene load_steps=4 format=3 uid="uid://b67pqy5ljya4v"]
+
+[ext_resource type="Script" path="res://scenes/EndScreen.gd" id="1_yydf8"]
+[ext_resource type="PackedScene" uid="uid://c2v30krouwggy" path="res://scenes/aerolito.tscn" id="2_khj0j"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_aggmw"]
+size = Vector2(2500.5, 42.5)
+
+[node name="EndScreen" type="Area2D"]
+visibility_layer = 15
+collision_mask = 15
+script = ExtResource("1_yydf8")
+mob_scene = ExtResource("2_khj0j")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(715, -77)
+shape = SubResource("RectangleShape2D_aggmw")
+
+[connection signal="area_entered" from="." to="." method="_on_area_entered"]

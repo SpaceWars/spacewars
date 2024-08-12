@@ -1,0 +1,53 @@
+[gd_scene load_steps=8 format=3 uid="uid://q0q2w5v2tkrv"]
+
+[ext_resource type="Texture2D" uid="uid://cj6on35wh1uqy" path="res://assets/backgrounds/bg-space.png" id="1_1dmbs"]
+[ext_resource type="PackedScene" uid="uid://bearj3kwlp2u1" path="res://scenes/player.tscn" id="1_4n7gu"]
+[ext_resource type="PackedScene" uid="uid://b67pqy5ljya4v" path="res://scenes/end_screen.tscn" id="3_clo70"]
+[ext_resource type="PackedScene" uid="uid://c2v30krouwggy" path="res://scenes/aerolito.tscn" id="4_jt1mn"]
+[ext_resource type="PackedScene" uid="uid://l5y2cugcottp" path="res://scenes/enemy.tscn" id="4_uhyd0"]
+[ext_resource type="PackedScene" uid="uid://bcfa2k3lb7luv" path="res://scenes/gui.tscn" id="5_xuhob"]
+
+[sub_resource type="GDScript" id="GDScript_co7vr"]
+script/source = "extends Timer
+
+@export var mob_scene: PackedScene
+# Called when the node enters the scene tree for the first time.
+func _ready():
+	pass # Replace with function body.
+
+
+# Called every frame. 'delta' is the elapsed time since the previous frame.
+func _process(delta):
+	pass
+
+"
+
+[node name="Main" type="Node2D"]
+
+[node name="Background" type="Sprite2D" parent="."]
+position = Vector2(703, 545)
+texture = ExtResource("1_1dmbs")
+
+[node name="Player" parent="." instance=ExtResource("1_4n7gu")]
+position = Vector2(728, 922)
+scale = Vector2(0.4, 0.4)
+speed = 500
+
+[node name="EndScreen" parent="." instance=ExtResource("3_clo70")]
+mob_scene = ExtResource("4_uhyd0")
+aero_scene = ExtResource("4_jt1mn")
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 1.064
+autostart = true
+script = SubResource("GDScript_co7vr")
+mob_scene = ExtResource("4_jt1mn")
+
+[node name="GUI" parent="." instance=ExtResource("5_xuhob")]
+offset_left = 53.0
+offset_top = 51.0
+offset_right = 202.0
+offset_bottom = 78.0
+
+[connection signal="health_depleted" from="Player" to="GUI" method="_on_player_health_depleted"]
+[connection signal="timeout" from="Timer" to="EndScreen" method="_on_timer_timeout"]

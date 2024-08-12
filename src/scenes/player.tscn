@@ -1,0 +1,86 @@
+[gd_scene load_steps=14 format=3 uid="uid://bearj3kwlp2u1"]
+
+[ext_resource type="Script" path="res://scenes/player.gd" id="1_4mimi"]
+[ext_resource type="Texture2D" uid="uid://cifhdptnhcy6u" path="res://assets/sprites/spaceship/center.png" id="1_jk28g"]
+[ext_resource type="Script" path="res://scenes/ShotOrigin.gd" id="3_p5oxl"]
+[ext_resource type="PackedScene" uid="uid://c8x6vpj06rxmq" path="res://scenes/torpedo.tscn" id="4_na1xo"]
+[ext_resource type="Texture2D" uid="uid://dqg30x5i2q7hg" path="res://assets/sprites/spaceship/left1.png" id="5_nsx5t"]
+[ext_resource type="Texture2D" uid="uid://dyea4h4oqkt6y" path="res://assets/sprites/spaceship/left2.png" id="6_8x033"]
+[ext_resource type="Texture2D" uid="uid://ct36ardsp4hi" path="res://assets/sprites/spaceship/left3.png" id="7_a711o"]
+[ext_resource type="Texture2D" uid="uid://tolgxv38kclg" path="res://assets/sprites/spaceship/left4.png" id="8_srnnw"]
+[ext_resource type="Texture2D" uid="uid://d027vaits8evl" path="res://assets/sprites/spaceship/right1.png" id="9_1r3yi"]
+[ext_resource type="Texture2D" uid="uid://b4sh8hm1qnom4" path="res://assets/sprites/spaceship/right2.png" id="10_2dal8"]
+[ext_resource type="Texture2D" uid="uid://cbg44v10k2iqa" path="res://assets/sprites/spaceship/right3.png" id="11_4pvuf"]
+[ext_resource type="Texture2D" uid="uid://dsumtoedmv1xh" path="res://assets/sprites/spaceship/right4.png" id="12_71a6d"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_ffkiv"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_jk28g")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_nsx5t")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_8x033")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_a711o")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_srnnw")
+}],
+"loop": false,
+"name": &"ani_left",
+"speed": 15.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_jk28g")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_1r3yi")
+}, {
+"duration": 1.0,
+"texture": ExtResource("10_2dal8")
+}, {
+"duration": 1.0,
+"texture": ExtResource("11_4pvuf")
+}, {
+"duration": 1.0,
+"texture": ExtResource("12_71a6d")
+}],
+"loop": false,
+"name": &"ani_right",
+"speed": 15.0
+}]
+
+[node name="Player" type="Area2D"]
+light_mask = 2
+visibility_layer = 5
+script = ExtResource("1_4mimi")
+speed = 300
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture_filter = 1
+texture = ExtResource("1_jk28g")
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
+light_mask = 2
+visibility_layer = 5
+polygon = PackedVector2Array(121, 178, 161, 23, 114, -21, 62, 24, 14, -155, -12, -155, -60, 24, -114, -23, -162, 23, -122, 177)
+
+[node name="ShotOrigin" type="Node2D" parent="."]
+light_mask = 2
+visibility_layer = 5
+position = Vector2(0, -155)
+scale = Vector2(0.4, 0.4)
+script = ExtResource("3_p5oxl")
+torpedo_scene = ExtResource("4_na1xo")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_ffkiv")
+animation = &"ani_right"
+
+[connection signal="area_entered" from="." to="." method="_on_area_entered"]

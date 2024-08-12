@@ -1,0 +1,20 @@
+[gd_scene load_steps=4 format=3 uid="uid://c8x6vpj06rxmq"]
+
+[ext_resource type="Script" path="res://scenes/torpedo.gd" id="1_88edm"]
+[ext_resource type="Texture2D" uid="uid://kqwnqnj4juuw" path="res://assets/sprites/spaceship/fire.png" id="1_l5lko"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_tnpjs"]
+size = Vector2(36, 65)
+
+[node name="torpedo" type="Area2D"]
+scale = Vector2(0.3, 0.3)
+script = ExtResource("1_88edm")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_l5lko")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -0.5)
+shape = SubResource("RectangleShape2D_tnpjs")
+
+[connection signal="area_entered" from="." to="." method="_on_area_entered"]
